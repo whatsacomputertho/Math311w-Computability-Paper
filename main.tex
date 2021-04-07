@@ -14,15 +14,39 @@
 In the age of digital communications, it is difficult to imagine how, in a world without digital computers, one might work toward the development of one.  As a result, often overlooked are the initial developments which led to today's digital age.  Nevertheless, the emergence of digital computers would not be possible without initial, groundbreaking developments in mathematical logic and information theory from significant engineers and mathematicians like Alan Turing and Claude Shannon.  Throughout this paper, we discuss computability in a rigorous, self-contained manner - both its proof by construction and its disproof by contradiction, with examples of each.  Furthermore, we aim to provide our readers with some historical insight into the development of these methods in order to build both an appreciation of their significance, and of the current challenges researchers face as attempts are made to further progress in theoretical computer science \cite{1}.
 
 \section{Background}
-Next step is the background!
+Here we introduce the background section
+\subsection{Historical Background}
+Here we discuss the history behind computer science and its foundations in mathematics
+\subsection{Relevant Concepts in Mathematical Logic}
+Here we discuss relevant concepts in mathematical logic
+\subsection{Finite State Machines}
+Here we discuss finite state machines, state diagrams, etc. to provide the necessary background to understand conceptual machines and understand Turing Machinces graphically
 
 \section{Turing Machines}
+An effective model for the general-purpose computer is the Turing Machine, developed by Alan Turing in 1936 \cite{2}.  The Turing Machine is a conceptual model of a general-purpose computing machine which involves the following conceptual components:
+\begin{itemize}
+	\item A "control box" which stores a finitely-large program
+	\item A tape with infinite spaces in which symbols can be stored, read, and written
+	\item A read-write mechanism for the tape \cite{3}
+\end{itemize}
+\noindent Formally, a \textbf{Turing Machine} is defined as a 7-Tuple, $(Q, \Sigma, \Gamma, \delta, q_{0}, q_{accept}, q_{reject})$, where:
+\begin{itemize}
+	\item $Q$ is a finite set containing the states of the machine
+	\item $\Sigma$ is a finite set containing the machine's \textbf{input alphabet}
+	\item $\Gamma$ is the finite set containing th emachine's \textbf{tape alphabet} such that the \textbf{blank symbol} $\textvisiblespace \in \Gamma$ and $\Sigma \subseteq \Gamma$
+	\item $\delta$ is the \textbf{transition function} $\delta: Q \times \Gamma \to Q \times \Gamma \times \{L, R\}$
+	\item $q_{0}$ is the \textbf{starting state} $q_{0} \in Q$
+	\item $q_{accept}$ is the \textbf{accept state} $q_{accept} \in Q$
+	\item $q_{reject}$ is the \textbf{reject state} $q_{reject} \in Q$ such that $q_{reject} \neq q_{accept}$ \cite{2}
+\end{itemize}
 \section{Proof of Computability by Construction}
 \section{Disproof of Computability by Contradiction}
 \section{Conclusions}
 \section{References}
 \begin{thebibliography}{100}
-\bibitem{1} National Research Council. 1999. Funding a Revolution: Government Support for Computing Research. Washington, DC: The National Academies Press. https://doi.org/10.17226/6323.
+	\bibitem{1} National Research Council. 1999. Funding a Revolution: Government Support for Computing Research. Washington, DC: The National Academies Press. https://doi.org/10.17226/6323.
+	\bibitem{2} Sipser, Michael. 2013. Introduction to the Theory of Computation. Cengage Learning. Third Edition. Print.
+	\bibitem{3} Mainzer, Klaus. 2018. Proof of Computation: Digitization in Mathematics, Computer Science, and Philosophy. World Scientific. https://doi.org/10.1142/11005
 \end{thebibliography}
 
 \end{document}

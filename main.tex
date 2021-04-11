@@ -1,12 +1,20 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{biblatex}
+\usepackage{graphicx}
+\usepackage[font=small, labelfont=bf]{caption}
+\usepackage{amsthm}
+\usepackage{mathabx}
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning, arrows}
 
 \title{Computability: Proof by Construction and Disproof by Contradiction}
 \author{Oluwafunke Alliyu, Ethan Balcik, Paul John Balderston, Sen Zhu}
 \date{April 2021}
 
 \begin{document}
+\theoremstyle{definition}
+\newtheorem{exmp}{Example}[section]
 
 \maketitle
 
@@ -29,6 +37,11 @@ An effective model for the general-purpose computer is the Turing Machine, devel
 	\item A tape with infinite spaces in which symbols can be stored, read, and written
 	\item A read-write mechanism for the tape \cite{3}
 \end{itemize}
+\begin{figure}[h]
+	\includegraphics[width=0.85\textwidth]{figure-3-1}
+	\centering
+	\caption{A simple visualization of a Turing machine.  Note that spaces along the tape would be filled with symbols which can be read and written using the read-write head on the machine.}
+\end{figure}
 \noindent Formally, a \textbf{Turing Machine} is defined as a 7-Tuple, $(Q, \Sigma, \Gamma, \delta, q_{0}, q_{accept}, q_{reject})$, where:
 \begin{itemize}
 	\item $Q$ is a finite set containing the states of the machine
@@ -37,9 +50,33 @@ An effective model for the general-purpose computer is the Turing Machine, devel
 	\item $\delta$ is the \textbf{transition function} $\delta: Q \times \Gamma \to Q \times \Gamma \times \{L, R\}$
 	\item $q_{0}$ is the \textbf{starting state} $q_{0} \in Q$
 	\item $q_{accept}$ is the \textbf{accept state} $q_{accept} \in Q$
-	\item $q_{reject}$ is the \textbf{reject state} $q_{reject} \in Q$ such that $q_{reject} \neq q_{accept}$ \cite{2}
+	\item $q_{reject}$ is the \textbf{reject state} $q_{reject} \in Q$ such that $q_{reject} \neq q_{accept}$
 \end{itemize}
-\noindent Further definitions to look into: Configuration; also provide at least one example of a Turing machine algorithm
+\noindent A \textbf{configuration} represents the state of a Turing machine's read-write head along its tape, as well as the characters on the tape.  For feasibly-sized tape inputs, a configuration is given as a string of the tape's characters listed starting from the left-most character and working right, with the state $q_{n} \in Q$ inserted to the left of the character currently being read by the read-write head of the machine.  To exemplify this, we can introduce a new instance of a Turing Machine with a specific input, and an algorithm running on the input.
+\begin{exmp}
+Let's imagine a Turing machine running an algorithm which verifies whether or not a binary string of length n has an even weight (number of 1s in the binary string).  It might achieve this by running the following algorithm:
+\begin{enumerate}
+	\item Read each bit from left to right on the input string and cross off every other '1' character.
+	\item If in step 1 the tape contained no '1' characters, accept.
+	\item If in step 1 the tape contained a single '1' character, reject.
+	\item Return to the left-most character on the tape.
+	\item Return to step 1.
+\end{enumerate}
+\noindent This particular Turing machine can be given formally as $M = (Q, \Sigma, \Gamma, \delta, q_{1}, q_{accept}, q_{reject})$ such that:
+\begin{itemize}
+	\item $Q \coloneq \{ q_{1}, q_{2}, q_{3}, q_{4}, q_{5}, q_{accept}, q_{reject} \}$
+	\item $\Sigma \coloneq \{ 0, 1 \}$
+	\item $\Gamma \coloneq \{ 0, 1, x, \textvisiblespace \}$
+	\item The transition function $\delta$ is given as a state diagram (below) \cite{2}
+\end{itemize}
+\begin{figure}[h]
+	\begin{tikzpicture}
+		\node[state, initial] (q1) {$q_{1}$};
+	\end{tikzpicture}
+	\centering
+	\caption{The transition function $\delta$ given as a finite state machine (NOTE: Going to stop here for today and finish this section and hopefully section 4 tomorrow morning)}
+\end{figure}
+\end{exmp}
 
 \section{Proof of Computability by Construction}
 Definition to look into: Turing-recognizable, Turing-decidable; also provide at least one proof of computability for a function

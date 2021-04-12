@@ -17,6 +17,7 @@
 \begin{document}
 \theoremstyle{definition}
 \newtheorem{exmp}{Example}[section]
+\newtheorem{defin}{Definition}[section]
 
 \maketitle
 
@@ -42,9 +43,12 @@ An effective model for the general-purpose computer is the Turing Machine, devel
 \begin{figure}[h]
 	\includegraphics[width=0.85\textwidth]{figure-3-1}
 	\centering
+	\setlength{\belowcaptionskip}{-10pt}
 	\caption{A simple visualization of a Turing machine.  Note that spaces along the tape would be filled with symbols which can be read and written using the read-write head on the machine.}
 \end{figure}
-\noindent Formally, a \textbf{Turing Machine} is defined as a 7-Tuple, $(Q, \Sigma, \Gamma, \delta, q_{0}, q_{accept}, q_{reject})$, where:
+\begin{defin}
+	A \textbf{Turing Machine} is a 7-Tuple, $(Q, \Sigma, \Gamma, \delta, q_{0}, q_{accept}, q_{reject})$, where:
+\end{defin}
 \begin{itemize}
 	\item $Q$ is a finite set containing the states of the machine
 	\item $\Sigma$ is a finite set containing the machine's \textbf{input alphabet}
@@ -121,8 +125,12 @@ Let's imagine a Turing machine running an algorithm which verifies whether or no
 \end{center}
 \end{exmp}
 \noindent Now, since our input string has two '1' characters, our turing machine accepts it.
+
 \section{Proof of Computability by Construction}
-Definition to look into: Turing-recognizable, Turing-decidable; also provide at least one proof of computability for a function
+The outcomes observed in \textbf{Example 3.1} are rather self-evident in the definition of a Turing machine, as two of its parameters are the accept state $q_{accept}$ and the reject state $q_{reject}$.  If a Turing machine ever reaches either of these states, then its algorithm will terminate.  However, a third potential outcome when running an algorithm using a Turing machine is that the algorithm may never terminate.  It is this possibility, the possibility that a Turing machine may run indefinitely for some input, from which much of the theory of computability emerges.  In this section, we will build the definitions which found the theory of computability, and explore how we may prove that a function is computable.
+\begin{defin}
+	A \textbf{language} $L$ is the set of all possible strings, or words, $\vv{x} \in L$ over an alphabet.
+\end{defin}
 
 \section{Disproof of Computability by Contradiction}
 Definitions/theorems to look into: Rice's Theorem; also provide at least one disproof of computability using Rice's Theorem

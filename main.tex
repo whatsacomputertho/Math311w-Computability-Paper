@@ -3,9 +3,11 @@
 \usepackage{biblatex}
 \usepackage{graphicx}
 \usepackage[font=small, labelfont=bf]{caption}
+\usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{mathabx}
 \usepackage{tikz}
+\usepackage{esvect}
 \usetikzlibrary{automata, positioning, arrows}
 
 \title{Computability: Proof by Construction and Disproof by Contradiction}
@@ -54,7 +56,7 @@ An effective model for the general-purpose computer is the Turing Machine, devel
 \end{itemize}
 \noindent A \textbf{configuration} represents the state of a Turing machine's read-write head along its tape, as well as the characters on the tape.  For feasibly-sized tape inputs, a configuration is given as a string of the tape's characters listed starting from the left-most character and working right, with the state $q_{n} \in Q$ inserted to the left of the character currently being read by the read-write head of the machine.  To exemplify this, we can introduce a new instance of a Turing Machine with a specific input, and an algorithm running on the input.
 \begin{exmp}
-Let's imagine a Turing machine running an algorithm which verifies whether or not a binary string of length n has an even weight (number of 1s in the binary string).  It might achieve this by running the following algorithm:
+Let's imagine a Turing machine running an algorithm which verifies whether or not a binary string of length $n > 1$ has an even weight (number of 1s in the binary string).  It might achieve this by running the following algorithm:
 \begin{enumerate}
 	\item Read each bit from left to right on the input string and cross off every other '1' character.
 	\item If in step 1 the tape contained no '1' characters, accept.
@@ -67,17 +69,58 @@ Let's imagine a Turing machine running an algorithm which verifies whether or no
 	\item $Q \coloneq \{ q_{1}, q_{2}, q_{3}, q_{4}, q_{5}, q_{accept}, q_{reject} \}$
 	\item $\Sigma \coloneq \{ 0, 1 \}$
 	\item $\Gamma \coloneq \{ 0, 1, x, \textvisiblespace \}$
-	\item The transition function $\delta$ is given as a state diagram (below) \cite{2}
+	\item The transition function $\delta$ is given as a state diagram (see figure 2) \cite{2}
 \end{itemize}
 \begin{figure}[h]
-	\begin{tikzpicture}
+	\begin{tikzpicture}[scale=0.8, transform shape]
 		\node[state, initial] (q1) {$q_{1}$};
+		\node[state, right of=q1, xshift=40] (q2) {$q_{2}$};
+		\node[state, right of=q2, xshift=60] (q3) {$q_{3}$};
+		\node[state, above left of=q3, xshift=-25, yshift=20] (q5) {$q_{5}$};
+		\node[state, below of=q3, yshift=-30] (q4) {$q_{4}$};
+		\node[state, below of=q2, yshift=-30] (qaccept) {$q_{accept}$};
+		\node[state, below of=q1, yshift=-30] (qreject) {$q_{reject}$};
+		\draw[->] (q1) edge node[yshift=6] {\tt $0 \rightarrow \textvisiblespace, R$} node[xshift=-5, yshift=-6] {\tt $1 \rightarrow R$} node[xshift=-5, yshift=-15] {\tt $\textvisiblespace \rightarrow R$} (q2);
+		\draw[->] (q1) edge node[xshift=-18] {\tt $x \rightarrow R$} (qreject);
+		\draw[->] (q2) edge[loop above] node {\tt $0 \rightarrow R$} node[yshift=10] {\tt $x \rightarrow R$} (q2);
+		\draw[->] (q2) edge node[yshift=-6] {\tt $1 \rightarrow x, R$} (q3);
+		\draw[->] (q2) edge node[yshift=4, xshift=18] {\tt $\textvisiblespace \rightarrow R$} (qaccept);
+		\draw[->] (q3) edge[loop right] node[yshift=-5] {\tt $x \rightarrow R$} node[yshift=5] {\tt $0 \rightarrow R$} (q3);
+		\draw[->] (q3) edge[bend right] node[yshift=-4, xshift=-18] {\tt $1 \rightarrow R$} (q4);
+		\draw[->] (q3) edge node[rotate=-40, xshift=1, yshift=7] {\tt $\textvisiblespace \rightarrow L$} (q5);
+		\draw[->] (q4) edge[bend right] node[xshift=20] {\tt $1 \rightarrow x, R$} (q3);
+		\draw[->] (q4) edge[loop right] node[yshift=-5] {\tt $x \rightarrow R$} node[yshift=5] {\tt $0 \rightarrow R$} (q4);
+		\draw[->] (q4) edge[bend left,below] node {\tt $\textvisiblespace \rightarrow L$} (qreject);
+		\draw[->] (q5) edge node[rotate=40, xshift=1, yshift=-6] {\tt $\textvisiblespace \rightarrow R$} (q2);
+		\draw[->] (q5) edge[loop above] node[xshift=21] {\tt $0 \rightarrow L$} node[xshift=21, yshift=-10] {\tt $1 \rightarrow L$} node[xshift=21, yshift=-20] {\tt $x \rightarrow L$} (q5);
 	\end{tikzpicture}
 	\centering
-	\caption{The transition function $\delta$ given as a finite state machine (NOTE: Going to stop here for today and finish this section and hopefully section 4 tomorrow morning)}
+	\caption{The transition function $\delta$ given as a finite state machine}
 \end{figure}
+\noindent Using the transition function $\delta$ as given by figure 2, we can show every configuration for a given input string.  For the sake of the example, let's consider the string $\vv{x} = 1101$.  We have the following configurations:
+\begin{center}
+\begin{tabular}{ c }
+	$q_{1}1011$ \\
+	$1q_{2}011$ \\
+	$10q_{2}11$ \\
+	$10xq_{3}1$ \\
+	$10x1q_{4}$ \\
+	$10xq_{reject}1$
+\end{tabular}
+\end{center}
+\noindent We can clearly see that, since our input string has three '1' characters, our turing machine rejects it.  However, let us walk through each configuration of the input string $\vv{x} = 1001$.  We have the following configurations (read down each column, and then from left to right):
+\begin{center}
+\begin{tabular}{ c c c c c }
+	$q_{1}1001$ & $10q_{5}0x$ & $x0q_{3}0x$ & $q_{5}x00x$ & $x00xq_{2}$ \\
+	$1q_{2}001$ & $1q_{5}00x$ & $x00q_{3}x$ & $q_{5} \textvisiblespace x00x$ & $x00x \textvisiblespace q_{accept}$ \\
+	$10q_{2}01$ & $q_{5}100x$ & $x00xq_{3}$ & $q_{2}x00x$\\
+	$100q_{2}1$ & $q_{5} \textvisiblespace 100x$ & $x00q_{5}x$ & $xq_{2}00x$\\
+	$100xq_{3}$ & $q_{2}100x$ & $x0q_{5}0x$ & $x0q_{2}0x$\\
+	$100q_{5}x$ & $xq_{3}00x$ & $xq_{5}00x$ & $x00q_{2}x$
+\end{tabular}
+\end{center}
 \end{exmp}
-
+\noindent Now, since our input string has two '1' characters, our turing machine accepts it.
 \section{Proof of Computability by Construction}
 Definition to look into: Turing-recognizable, Turing-decidable; also provide at least one proof of computability for a function
 

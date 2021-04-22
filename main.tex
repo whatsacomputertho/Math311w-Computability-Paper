@@ -5,9 +5,11 @@
 \usepackage[font=small, labelfont=bf]{caption}
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{amsfonts}
 \usepackage{mathabx}
 \usepackage{tikz}
 \usepackage{esvect}
+\usepackage{changepage}
 \usetikzlibrary{automata, positioning, arrows}
 
 \title{Computability: Proof by Construction and Disproof by Contradiction}
@@ -18,6 +20,7 @@
 \theoremstyle{definition}
 \newtheorem{exmp}{Example}[section]
 \newtheorem{defin}{Definition}[section]
+\newtheorem{prf}{Proof}[section]
 
 \maketitle
 
@@ -60,7 +63,7 @@ An effective model for the general-purpose computer is the Turing Machine, devel
 \end{itemize}
 \noindent A \textbf{configuration} represents the state of a Turing machine's read-write head along its tape, as well as the characters on the tape.  For feasibly-sized tape inputs, a configuration is given as a string of the tape's characters listed starting from the left-most character and working right, with the state $q_{n} \in Q$ inserted to the left of the character currently being read by the read-write head of the machine.  To exemplify this, we can introduce a new instance of a Turing Machine with a specific input, and an algorithm running on the input.
 \begin{exmp}
-Let's imagine a Turing machine running an algorithm which verifies whether or not a binary string of length $n > 1$ has an even weight (number of 1s in the binary string).  It might achieve this by running the following algorithm:
+Let's imagine a Turing machine running an algorithm which verifies whether or not a binary string of length $n$ has an even weight (number of 1s in the binary string).  It might achieve this by running the following algorithm:
 \begin{enumerate}
 	\item Read each bit from left to right on the input string and cross off every other '1' character.
 	\item If in step 1 the tape contained no '1' characters, accept.
@@ -76,55 +79,56 @@ Let's imagine a Turing machine running an algorithm which verifies whether or no
 	\item The transition function $\delta$ is given as a state diagram (see figure 2)
 \end{itemize}
 \begin{figure}[h]
-	\begin{tikzpicture}[scale=0.8, transform shape]
+	\begin{tikzpicture}[scale=0.75, transform shape]
 		\node[state, initial] (q1) {$q_{1}$};
-		\node[state, right of=q1, xshift=40] (q2) {$q_{2}$};
-		\node[state, right of=q2, xshift=60] (q3) {$q_{3}$};
-		\node[state, above left of=q3, xshift=-25, yshift=20] (q5) {$q_{5}$};
-		\node[state, below of=q3, yshift=-30] (q4) {$q_{4}$};
-		\node[state, below of=q2, yshift=-30] (qaccept) {$q_{accept}$};
-		\node[state, below of=q1, yshift=-30] (qreject) {$q_{reject}$};
-		\draw[->] (q1) edge node[yshift=6] {\tt $0 \rightarrow \textvisiblespace, R$} node[xshift=-5, yshift=-6] {\tt $1 \rightarrow R$} node[xshift=-5, yshift=-15] {\tt $\textvisiblespace \rightarrow R$} (q2);
-		\draw[->] (q1) edge node[xshift=-18] {\tt $x \rightarrow R$} (qreject);
-		\draw[->] (q2) edge[loop above] node {\tt $0 \rightarrow R$} node[yshift=10] {\tt $x \rightarrow R$} (q2);
-		\draw[->] (q2) edge node[yshift=-6] {\tt $1 \rightarrow x, R$} (q3);
-		\draw[->] (q2) edge node[yshift=4, xshift=18] {\tt $\textvisiblespace \rightarrow R$} (qaccept);
-		\draw[->] (q3) edge[loop right] node[yshift=-5] {\tt $x \rightarrow R$} node[yshift=5] {\tt $0 \rightarrow R$} (q3);
-		\draw[->] (q3) edge[bend right] node[yshift=-4, xshift=-18] {\tt $1 \rightarrow R$} (q4);
-		\draw[->] (q3) edge node[rotate=-40, xshift=1, yshift=7] {\tt $\textvisiblespace \rightarrow L$} (q5);
-		\draw[->] (q4) edge[bend right] node[xshift=20] {\tt $1 \rightarrow x, R$} (q3);
-		\draw[->] (q4) edge[loop right] node[yshift=-5] {\tt $x \rightarrow R$} node[yshift=5] {\tt $0 \rightarrow R$} (q4);
-		\draw[->] (q4) edge[bend left,below] node {\tt $\textvisiblespace \rightarrow L$} (qreject);
-		\draw[->] (q5) edge node[rotate=40, xshift=1, yshift=-6] {\tt $\textvisiblespace \rightarrow R$} (q2);
-		\draw[->] (q5) edge[loop above] node[xshift=21] {\tt $0 \rightarrow L$} node[xshift=21, yshift=-10] {\tt $1 \rightarrow L$} node[xshift=21, yshift=-20] {\tt $x \rightarrow L$} (q5);
+		\node[state, below=of q1] (q2) {$q_{2}$};
+		\node[state, right=of q2, xshift=100] (q3) {$q_{3}$};
+		\node[state, right=of q1, xshift=100] (q4) {$q_{4}$};
+		\node[state, below=of q3] (q5) {$q_{5}$};
+		\node[state, below=of q2] (qreject) {$q_{reject}$};
+		\node[state, right=of q4, xshift=50] (qaccept) {$q_{accept}$};
+		\draw[->] (q1) edge node[yshift=10, xshift=-20] {\tt $\textvisiblespace \rightarrow R$} node[xshift=-20] {\tt $x \rightarrow R$} (q2);
+		\draw[->] (q1) edge node[yshift=6] {\tt $0 \rightarrow R$} (q4);
+		\draw[->] (q1) edge node[rotate=-20, yshift=-6, xshift=-15] {\tt $1 \rightarrow x , R$} (q3);
+		\draw[->] (q2) edge[loop left] node[yshift=5] {\tt $0 \rightarrow R$} node[yshift=-5] {\tt $x \rightarrow R$}(q2);
+		\draw[->] (q2) edge node[yshift=6] {\tt $1 \rightarrow x , R$} (q3);
+		\draw[->] (q2) edge node[xshift=-20] {\tt $\textvisiblespace \rightarrow R$} (qreject);
+		\draw[->] (q3) edge[loop right] node[yshift=5] {\tt $0 \rightarrow R$} node[yshift=-5] {\tt $x \rightarrow R$} (q3);
+		\draw[->] (q3) edge[bend right] node[xshift=20] {\tt $1 \rightarrow R$} (q4);
+		\draw[->] (q3) edge node[xshift=20] {\tt $\textvisiblespace \rightarrow L$} (q5);
+		\draw[->] (q4) edge[bend right] node[xshift=-20] {\tt $1 \rightarrow x , R$} (q3);
+		\draw[->] (q4) edge[loop above] node[yshift=10] {\tt $x \rightarrow R$} node {\tt $0 \rightarrow R$} (q4);
+		\draw[->] (q4) edge node[yshift=5] {\tt $\textvisiblespace \rightarrow R$} (qaccept);
+		\draw[->] (q5) edge node[rotate=-20, yshift=-5, xshift=-5] {\tt $\textvisiblespace \rightarrow R$} (q2);
+		\draw[->] (q5) edge[loop right] node[yshift=10] {\tt $0 \rightarrow L$} node[yshift=0] {\tt $1 \rightarrow L$} node[yshift=-10] {\tt $x \rightarrow L$} (q5);
 	\end{tikzpicture}
 	\centering
 	\caption{The transition function $\delta$ given as a finite state machine}
 \end{figure}
-\noindent Using the transition function $\delta$ as given by figure 2, we can show every configuration for a given input string.  For the sake of the example, let's consider the string $\vv{x} = 1101$.  We have the following configurations:
-\begin{center}
-\begin{tabular}{ c }
-	$q_{1}1011$ \\
-	$1q_{2}011$ \\
-	$10q_{2}11$ \\
-	$10xq_{3}1$ \\
-	$10x1q_{4}$ \\
-	$10xq_{reject}1$
-\end{tabular}
-\end{center}
-\noindent We can clearly see that, since our input string has three '1' characters, our turing machine rejects it.  However, let us walk through each configuration of the input string $\vv{x} = 1001$.  We have the following configurations (read down each column, and then from left to right):
+\noindent Using the transition function $\delta$ as given by figure 2, we can show every configuration for a given input string.  For the sake of the example, let's consider the string $\vv{x} = 1101$.  We have the following configurations (read down each column, and then from left to right):
 \begin{center}
 \begin{tabular}{ c c c c c }
-	$q_{1}1001$ & $10q_{5}0x$ & $x0q_{3}0x$ & $q_{5}x00x$ & $x00xq_{2}$ \\
-	$1q_{2}001$ & $1q_{5}00x$ & $x00q_{3}x$ & $q_{5} \textvisiblespace x00x$ & $x00x \textvisiblespace q_{accept}$ \\
-	$10q_{2}01$ & $q_{5}100x$ & $x00xq_{3}$ & $q_{2}x00x$\\
-	$100q_{2}1$ & $q_{5} \textvisiblespace 100x$ & $x00q_{5}x$ & $xq_{2}00x$\\
-	$100xq_{3}$ & $q_{2}100x$ & $x0q_{5}0x$ & $x0q_{2}0x$\\
-	$100q_{5}x$ & $xq_{3}00x$ & $xq_{5}00x$ & $x00q_{2}x$
+	$q_{1}1101$ & $x1q_{5}0x$ & $xxq_{3}0x$ & $q_{5}xx0x$ & $xx0xq_{2}\textvisiblespace$ \\
+	$xq_{3}101$ & $xq_{5}10x$ & $xx0q_{3}x$ & $q_{5}\textvisiblespace xx0x$ & $xx0x\textvisiblespace q_{reject}$ \\
+	$x1q_{4}01$ & $q_{5}x10x$ & $xx0xq_{3}\textvisiblespace$ & $q_{2}xx0x$ \\
+	$x10q_{4}1$ & $q_{5}\textvisiblespace x10x$ & $xx0q_{5}x$ & $xq_{2}x0x$ \\
+	$x10xq_{3}\textvisiblespace$ & $q_{2}x10x$ & $xxq_{5}0x$ & $xxq_{2}0x$ \\
+	$x10q_{5}x$ & $xq_{2}10x$ & $xq_{5}x0x$ & $xx0q_{2}x$
+\end{tabular}
+\end{center}
+\noindent We can clearly see that, since our input string has an odd number of '1' characters, our turing machine rejects it, signifying that it does not have an even weight.  Next, let us walk through each configuration of the even-weighted input string $\vv{x} = 1001$.  We have the following configurations:
+\begin{center}
+\begin{tabular}{ c }
+	$q_{1}1001$ \\
+	$xq_{3}001$ \\
+	$x0q_{3}01$ \\
+	$x00q_{3}1$ \\
+	$x00xq_{4}\textvisiblespace$ \\
+	$x00x\textvisiblespace q_{accept}$
 \end{tabular}
 \end{center}
 \end{exmp}
-\noindent Now, since our input string has two '1' characters, our turing machine accepts it. \cite{2}
+\noindent Now, since our input string has an even number of '1' characters, our turing machine accepts it. \cite{2}
 
 \section{Proof of Computability by Construction}
 The outcomes observed in \textbf{Example 3.1} are rather self-evident in the definition of a Turing machine, as two of its parameters are the accept state $q_{accept}$ and the reject state $q_{reject}$.  If a Turing machine ever reaches either of these states, then its algorithm will terminate.  However, a third potential outcome when running an algorithm using a Turing machine is that the algorithm may never terminate.  It is this possibility, the possibility that a Turing machine may run indefinitely for some input, from which much of the theory of computability emerges.  In this section, we will build the definitions which found the theory of computability, and explore how we may prove that a function is computable.
@@ -143,7 +147,22 @@ The outcomes observed in \textbf{Example 3.1} are rather self-evident in the def
 \begin{defin}
 	A language $L$ is \textbf{Turing-decidable} if there exists some Turing machine $M$ such that, for each input word $\vv{x} \in L$, $M$ either accepts or rejects it. \cite{2}
 \end{defin}
-\noindent This definition given is the definition which founds much of the theory of computability.  It does so by use of the Church-Turing thesis, and the wealth of empirical evidence backing it, albeit there is no single, rigorous mathematical proof for this thesis.  Essentially, one interpretation of the thesis states that if one wishes to prove that a certain operation is computable, one can do so by constructing a Turing machine which terminates for all possible inputs into that operation \cite{4}.  (Introduce the operation which we wish to show is computable by construction).
+\noindent This definition given is the definition which founds much of the theory of computability.  It does so by use of the Church-Turing thesis, and the wealth of empirical evidence backing it, albeit there is no single, rigorous mathematical proof for this thesis.  Essentially, one interpretation of the thesis states that if one wishes to prove that a certain operation is computable, one can do so by constructing a Turing machine which terminates for all possible inputs into that operation \cite{4}.  To display this, we will prove that the binary 'even weight verification' function introduced in \textbf{Example 3.1} is a computable function.
+\begin{prf}
+	First, let us note that the input alphabet accepted by our Turing machine (its definition given in $\textbf{Example 3.1}$) $\Sigma \coloneq \{ 0, 1 \}$.  This would imply that the \textbf{language} $L$ emergent from this alphabet is simply the set of all binary strings (or \textbf{words}) of arbitrary length $n \geq 1$.  Thus, our input language can be enumerated using $\mathbb{N}^{2}$.  We must use $\mathbb{N}^{2}$ as opposed to simply $\mathbb{N}$ because we note that, for example, the strings $\vv{y}=000101$ and $\vv{z}=101$ are different inputs entirely, and will be handled differently by our Turing machine, even though their decimal values are identical.  Therefore, we allow one degree of freedom to represent the length of the arbitrary input word $\vv{x}$, and the other to represent the decimal value of the arbitrary input word $\vv{x}$.  Using this fact, we can partition our input language into four unique subsets, and engage in a 'proof by cases' on an arbitrary member of each such subset.\\
+\begin{adjustwidth}{0.5cm}{}
+	\textbf{Case 1:} Let $\vv{x} \in $ be an arbitrary-length input string with an even number of '1' characters, and starting with the '0' character.  Our Turing machine will begin in state $q_{4}$.  Since we know that there are an even number of '1' characters in $\vv{x}$, we can expect our Turing machine to 'bounce' back and forth between states $q_{4}$ and $q_{3}$ an even number of times, crossing off every other '1' character with an 'x' character, until ultimately producing some configuration $\dots q_{4}\textvisiblespace$.  This will finally yield the configuration $\dots \textvisiblespace q_{accept}$, and the Turing machine will terminate in state $q_{accept}$ as expected.\\
+\end{adjustwidth}
+\begin{adjustwidth}{0.5cm}{}
+	\textbf{Case 2:} Let $\vv{x} \in $ be an arbitrary-length input string with an even number of '1' characters, and starting with the '1' character.\\
+\end{adjustwidth}
+\begin{adjustwidth}{0.5cm}{}
+	\textbf{Case 3:} Let $\vv{x} \in $ be an arbitrary-length input string with an odd number of '1' characters, and starting with the '0' character.\\
+\end{adjustwidth}
+\begin{adjustwidth}{0.5cm}{}
+	\textbf{Case 4:} Let $\vv{x} \in $ be an arbitrary-length input string with an odd number of '1' characters, and starting with the '1' character.\\
+\end{adjustwidth}
+\end{prf}
 
 \section{Disproof of Computability by Contradiction}
 Definitions/theorems to look into: The Halting Problem, Rice's Theorem; also provide at least one disproof of computability using Rice's Theorem

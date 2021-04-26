@@ -12,7 +12,7 @@
 \usepackage{changepage}
 \usetikzlibrary{automata, positioning, arrows}
 
-\title{Computability: Proof by Construction and Disproof by Contradiction}
+\title{Computability, its Proof by Construction, and the Halting Problem}
 \author{Oluwafunke Alliyu, Ethan Balcik, Paul John Balderston, Sen Zhu}
 \date{April 2021}
 
@@ -147,7 +147,7 @@ The outcomes observed in \textbf{Example 3.1} are rather self-evident in the def
 \begin{defin}
 	A language $L$ is \textbf{Turing-decidable} if there exists some Turing machine $M$ such that, for each input word $\vv{x} \in L$, $M$ either accepts or rejects it. \cite{2}
 \end{defin}
-\noindent This definition given is the definition which founds much of the theory of computability.  It does so by use of the Church-Turing thesis, and the wealth of empirical evidence backing it, albeit there is no single, rigorous mathematical proof for this thesis.  Essentially, one interpretation of the thesis states that if one wishes to prove that a certain operation is computable, one can do so by constructing a Turing machine which terminates for all possible inputs into that operation \cite{4}.  To display this, we will prove that the binary 'even weight verification' function introduced in \textbf{Example 3.1} is a computable function.
+\noindent The above definitions are those which found much of the theory of computability.  It does so by use of the Church-Turing thesis, and the wealth of empirical evidence backing it, albeit there is no single, rigorous mathematical proof for this thesis.  Essentially, one interpretation of the thesis states that if one wishes to prove that a certain operation is computable, one can do so by constructing a Turing machine which terminates for all possible inputs into that operation \cite{4}.  To display this, we will prove that the binary 'even weight verification' function introduced in \textbf{Example 3.1} is a computable function.
 \begin{prf}
 	First, let us note that the input alphabet accepted by our Turing machine (its definition given in $\textbf{Example 3.1}$) $\Sigma \coloneq \{ 0, 1 \}$.  This would imply that the \textbf{language} $L$ emergent from this alphabet is simply the set of all binary strings (or \textbf{words}) of arbitrary length $n \geq 1$.  Thus, our input language can be enumerated using $\mathbb{N}^{2}$.  We must use $\mathbb{N}^{2}$ as opposed to simply $\mathbb{N}$ because we note that, for example, the strings $\vv{y}=000101$ and $\vv{z}=101$ are different inputs entirely, and will be handled differently by our Turing machine, even though their decimal values are identical.  Therefore, we allow one degree of freedom to represent the length of the arbitrary input word $\vv{x}$, and the other to represent the decimal value of the arbitrary input word $\vv{x}$.  Using this fact, we can partition our input language into four unique subsets, and engage in a 'proof by cases' on an arbitrary member of each such subset.\\
 \begin{adjustwidth}{0.5cm}{}
@@ -165,19 +165,30 @@ The outcomes observed in \textbf{Example 3.1} are rather self-evident in the def
 Terefore, the binary 'even weight verification' function is computable, as it terminates for all input words $\vv{x} \in L$. \qedsymbol
 \end{prf}
 
-\section{Disproof of Computability by Contradiction}
-Definitions/theorems to look into: The Halting Problem, Rice's Theorem; also provide at least one disproof of computability using Rice's Theorem
+\section{The Halting Problem}
+Alan Turing, during the 20th century, used similar concepts from computability theory to prove that first-order logic is, in fact, non-decidable.  This was a major question in the field of mathematical logic for some time, and Turing was among one of the first to prove this fact.  In order to prove this fact, Turing showed that there exists no finite program which terminates for every possible input belonging to the language of first-order logic.  The proof that Turing constructed is known commonly as \textbf{the halting problem}, and it goes as follows. \cite{7}
+\begin{prf}
+	Assume there exists some program $M$ which accepts as its input parameters a program $P$, and a particular input for $P$ which we'll call $I$.  Assume that $M$ determines whether $P$ terminates for the input $I$, itself terminating in state $q_{accept}$ if $P$ terminates for the input $I$, and terminating in state $q_{reject}$ if not.  Finally, and most importantly as we work toward a contradiction, assume that $M$ itself terminates for all possible inputs $P$ and $I$.  To begin the proof, we generate a new Turing machine by transforming $M$ in such a way that simple logic is appended to the end of $M$'s program.  We say that, if the new Turing machine, which we'll call $M'$, enters state $q_{accept}$, it should loop forever, and if $M'$ enters state $q_{reject}$, then it should terminate in state $q_{accept}$.  We now feed $M'$ into itself with $M'$ as its input.\\
+\begin{adjustwidth}{0.5cm}{}
+	\textbf{Case 1:} If we assume the program $M'$ terminates on input $M'$, then $M'$ will loop forever, leading to a contradiction.\\
+\end{adjustwidth}
+\begin{adjustwidth}{0.5cm}{}
+	\textbf{Case 2:} If we assume the program $M'$ loops forever on input $M'$, then $M'$ will terminate, also leading to a contradiction.\\
+\end{adjustwidth}
+	\noindent Therefore, if we assume that there exists some program $M$ which determines whether an input program given its input terminates, then we are led to a contradiction in both cases. \cite{5} \qedsymbol
+\end{prf}
 
 \section{Conclusions}
+Here we finally discuss the conclusions of the paper
 
-\section{References}
 \begin{thebibliography}{100}
-	\bibitem{1} National Research Council. 1999. Funding a Revolution: Government Support for Computing Research. Washington, DC: The National Academies Press. https://doi.org/10.17226/6323.
+	\bibitem{1} National Research Council. (1999). Funding a Revolution: Government Support for Computing Research. Washington, DC: The National Academies Press. https://doi.org/10.17226/6323.
 	\bibitem{2} Sipser, Michael. (2013). Introduction to the Theory of Computation. Cengage Learning. Third Edition. Print.
-	\bibitem{3} Mainzer, Klaus. 2018. Proof of Computation: Digitization in Mathematics, Computer Science, and Philosophy. World Scientific. https://doi.org/10.1142/11005
+	\bibitem{3} Mainzer, Klaus. (2018). Proof of Computation: Digitization in Mathematics, Computer Science, and Philosophy. World Scientific. https://doi.org/10.1142/11005
 	\bibitem{4} Evans, David. (2010). Church-Turing Thesis. University of Virginia. Web. http://www.cs.virginia.edu/~evans/cs3102-s10/classes/class15/class15.pdf
 	\bibitem{5} Pruhs, Kirk. (1997). Halting Problem - Simple Proof. Web. https://www.comp.nus.edu.sg/~cs5234/FAQ/halt.html
 	\bibitem{6} Cornell University. (2012). Introduction to Algorithms: Notes on Turing Machines. Web. http://www.cs.cornell.edu/courses/cs4820/2012sp/handouts/turingm.pdf
+	\bibitem{7} Jago, Mark. (2014). Turing and The Halting Problem - Computerphile. YouTube. https://www.youtube.com/watch?v=macM\_MtS\_w4
 \end{thebibliography}
 
 \end{document}

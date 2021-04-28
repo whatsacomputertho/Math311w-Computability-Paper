@@ -40,37 +40,34 @@ a binary input string. We conclude with a discussion of the Halting Problem in
 order to further extend our discussion to noncomputable functions. \cite{1}
 
 \section{Background}
-Elementary set theory is of crucial importance in the understanding of the formal notion of computibility. Before diving into the concept of computability, one must understand the relevant prerequisite concepts in elementary set theory which enable the various definitions in theoretical computer science definitions to be given.
+It is essential to understanding the following definitions of elementary set theory prior to the discussion of Turing machines and their functionality.
 \begin{defin}
-A \textbf{set} is a well-defined collection of objects, known as its \textbf{members}.
+A \textbf{set} is a well-defined collection of objects. The objects which a set is composed of are referred to as its \textbf{elements} or \textbf{members}.
 \begin{itemize}
-\item $a \in S$ represents that a is 'in' $S$, or that a is a member of $S$
-\item $a \notin S$ represents that a is not a member of S
+\item $a \in S$ represents that a is 'in' $S$, or that a is a elements of $S$
+\item $a \notin S$ represents that a is not an element of $S$
 \item $\emptyset$ represents an empty set
 \end{itemize}
 \end{defin}
 \begin{defin}
-If each element $y \in Y$ is such that $y \in X$, then y is a \textbf{subset} of x, which can be written as $Y\subseteq X$.
-If $Y$ is a subset of $X$, but there exsists at least one $x \in X$ such that $x \notin Y$ then we say that $Y$ is a \textbf{proper subset} of X, which can be written as $Y \subset X$.
+Consider the sets $X$ and $Y$ with $y \in Y$ and $x \in X$ where $y$ and $x$ are arbitary elements. If every element $y \in Y$ is such that $y \in X$, then $Y$ is a \textbf{subset} of $X$, which may be written as $Y\subseteq X$.
+If $Y$ is a subset of $X$, but there exsists at least one $x \in X$ for which $x \notin Y$ then $Y$ is a \textbf{proper subset} of X, which we write as $Y \subset X$.
 \begin{itemize}
-\item Any set $X$ has the subsets $X \subseteq X$ and $\emptyset \subseteq X$, which are distinct unless X is empty.
+\item Any set $X$ contains the subsets $X \subseteq X$ and $\emptyset \subseteq X$, which are distinct unless X is empty.
 \end{itemize}
 \end{defin}
 \begin{defin}
 The \textbf{Cartesian product} $X \times Y \coloneq \{ (x, y): x \in X$ and $y \in Y \}$, is defined to be the set of all ordered pairs such that $x \in X$ and $y \in Y$.
 \begin{itemize}
-\item The Cartesian product of more than two sets may be given as
+\item The Cartesian product of $n$ sets, where $n \in \mathbb{N}$, is given as
 $X_{1}\times X_{2} \times {...} \times X_{n} \coloneq \{( x_{1},x_{2},{...},x_{n}):x_{i}\in X_{i}$ for each $i = 1,2,{...},n\}$
-\item For a set $X$ and some $n \in \mathbb{Z}_{\geq 0}$, the nth \textbf{Cartesian power} of $X$ is defined by
-$X^{n} \coloneq X \times {...} \times X = \{(x_{1},{...},x_n) ; x_{1},x_{2},{...},x_{n}\in X\}$, and it is essentially the cartesian product of $X$ by itself $n$ times.
+\item For a given set $X$ and some aribitrary $n \in \mathbb{Z}_{\geq 0}$, the nth \textbf{Cartesian power} of $X$ is defined by
+$X^{n} \coloneq X \times {...} \times X = \{(x_{1},{...},x_n) ; x_{1},x_{2},{...},x_{n}\in X\}$, and it is the cartesian product of $X$ with itself taken $n$ times.
 \end{itemize}
 \end{defin}
 \begin{defin}
-A \textbf{function} $f \subset X \times Y$, such that each $x \in X$ is mapped to exactly one $y \in Y$, forming the 2-tuple (or ordered pair) $(x, y) \in f$
+A \textbf{function} $f \subseteq X \times Y$, such that each $x \in X$ is mapped to exactly one $y \in Y$, forming the 2-tuple (or ordered pair) $(x, y) \in f$
 \end{defin}
-\begin{itemize}
-\item Note that the sets $X$ and $Y$ above are arbitrary, opening the possibility for a function to be potentially defined from the cartesian product of multiple arbitrary sets to the cartesian product of multiple arbitrary sets.
-\end{itemize}
 
 \section{Turing Machines}
 An effective model for the general-purpose computer is the Turing Machine, developed by Alan Turing in 1936 \cite{2}.  The Turing Machine is a conceptual model of a general-purpose computing machine which involves the following conceptual components:
@@ -95,21 +92,28 @@ An effective model for the general-purpose computer is the Turing Machine, devel
 	\item $\delta$ is the \textbf{transition function} $\delta: Q \times \Gamma \to Q \times \Gamma \times \{L, R\}$
 	\item $q_{0}$ is the \textbf{starting state} $q_{0} \in Q$
 	\item $q_{accept}$ is the \textbf{accept state} $q_{accept} \in Q$
-	\item $q_{reject}$ is the \textbf{reject state} $q_{reject} \in Q$ such that $q_{reject} \neq q_{accept}$
+	\item $q_{reject}$ is the \textbf{reject state} $q_{reject} \in Q$ such that $q_{reject} \neq q_{accept}$ \cite{2}
 \end{itemize}
-\noindent A \textbf{configuration} represents the state of a Turing machine's read-write head along its tape, as well as the characters on the tape.  For feasibly-sized tape inputs, a configuration is given as a string of the tape's characters listed starting from the left-most character and working right, with the state $q_{n} \in Q$ inserted to the left of the character currently being read by the read-write head of the machine.  To exemplify this, we can introduce a new instance of a Turing Machine with a specific input, and an algorithm running on the input.
+\begin{defin}
+	A \textbf{configuration} is a string of characters representing the position of a Turing machine's read-write head along its tape, as well as the characters on the tape.  It is written as a string of the tape's characters listed starting from the left-most character and working right, with the state $q_{n} \in Q$ inserted to the left of the character currently being read by the read-write head of the machine.
+\end{defin}
+\begin{defin}
+	A \textbf{computation} is a sequence of configurations which represents the sequence of transition function operations run by a Turing machine given some input. \cite{6}
+\end{defin}
+\noindent To exemplify these definitions, we can introduce a new instance of a Turing Machine with a specific input, and an algorithm running on the input.
 \begin{exmp}
-Let's imagine a Turing machine running an algorithm which verifies whether or not a binary string of length $n$ has an even weight (number of 1s in the binary string).  It might achieve this by running the following algorithm:
+Let's imagine a Turing machine running an algorithm which decides whether a binary string of length $n : n \in \mathbb{Z}_{\geq 0}$ has an even weight (number of 1s in the binary string).  It might run the following algorithm:
 \begin{enumerate}
-	\item Read each bit from left to right on the input string and cross off every other '1' character.
-	\item If in step 1 the tape contained no '1' characters, accept.
-	\item If in step 1 the tape contained a single '1' character, reject.
-	\item Return to the left-most character on the tape.
-	\item Return to step 1.
+	\item Read the frist bit of the string
+	\item If the first bit of the string is a '0', transition to state $q_{3}$.
+	\item If the first bit of the string is a '1', transition to state $q_{2}$.
+	\item While in states $q_{2}$ and $q_{3}$, transition to the other state if a '1' is read, remain in current state if '0' is read.
+	\item If in state $q_{2}$ and reading '$\textvisiblespace$' character, terminate in state $q_{reject}$
+	\item If in state $q_{3}$ and reading '$\textvisiblespace$' charactre, terminate in state $q_{accept}$.
 \end{enumerate}
 \noindent This particular Turing machine can be given formally as $M \coloneq (Q, \Sigma, \Gamma, \delta, q_{1}, q_{accept}, q_{reject})$ such that:
 \begin{itemize}
-	\item $Q \coloneq \{ q_{1}, q_{2}, q_{3}, q_{4}, q_{5}, q_{accept}, q_{reject} \}$
+	\item $Q \coloneq \{ q_{1}, q_{2}, q_{3}, q_{accept}, q_{reject} \}$
 	\item $\Sigma \coloneq \{ 0, 1 \}$
 	\item $\Gamma \coloneq \{ 0, 1, \textvisiblespace \}$
 	\item The transition function $\delta$ is given as an instruction set (see figure 2)
@@ -171,9 +175,9 @@ The outcomes observed in \textbf{Example 3.1} are rather self-evident in the def
 \begin{defin}
 	A language $L$ is \textbf{Turing-decidable} if there exists some Turing machine $M$ such that, for each input word $\vv{x} \in L$, $M$ either accepts or rejects it. \cite{2}
 \end{defin}
-\noindent The above definitions are those which found much of the theory of computability.  It does so by use of the Church-Turing thesis, and the wealth of empirical evidence backing it, albeit there is no single, rigorous mathematical proof for this thesis.  Essentially, one interpretation of the thesis states that if one wishes to prove that a certain operation is computable, one can do so by constructing a Turing machine which terminates for all possible inputs into that operation \cite{4}.  To display this, we will prove that the binary 'even weight verification' function introduced in \textbf{Example 3.1} is a computable function.
+\noindent The above definitions are those which found much of the theory of computability.  It does considering the Church-Turing thesis, and the wealth of empirical evidence backing it, albeit there is no single, rigorous mathematical proof for this thesis.  Essentially, one interpretation of the thesis states that if one wishes to prove that a certain operation is computable, one can do so by constructing a Turing machine which terminates for all possible inputs into that operation \cite{4}.  To display this, we will prove that the binary 'even weight verification' function introduced in \textbf{Example 3.1} is a computable function.
 \begin{prf}
-	First, let us note that the input alphabet accepted by our Turing machine (its definition given in $\textbf{Example 3.1}$) $\Sigma \coloneq \{ 0, 1 \}$.  This would imply that the \textbf{language} $L$ emergent from this alphabet is simply the set of all binary strings (or \textbf{words}) of arbitrary length $n \geq 1$.  Thus, our input language can be enumerated using $\mathbb{N}^{2}$.  We must use $\mathbb{N}^{2}$ as opposed to simply $\mathbb{N}$ because we note that, for example, the strings $\vv{y}=000101$ and $\vv{z}=101$ are different inputs entirely, and will be handled differently by our Turing machine, even though their decimal values are identical.  Therefore, we allow one degree of freedom to represent the length of the arbitrary input word $\vv{x}$, and the other to represent the decimal value of the arbitrary input word $\vv{x}$.  Using this fact, we can partition our input language into four unique subsets, and engage in a 'proof by cases' on an arbitrary member of each such subset.\\
+	First, let us note that the input alphabet accepted by our Turing machine (its definition given in $\textbf{Example 3.1}$) $\Sigma \coloneq \{ 0, 1 \}$.  This would imply that the \textbf{language} $L$ emergent from this alphabet is simply the set of all binary strings (or \textbf{words}) of arbitrary length $n : n \in \mathbb{Z}_{\geq 0}$.  Thus, our input language can be enumerated using $\mathbb{Z}^{2}_{\geq 0}$.  We must use $\mathbb{Z}^{2}_{\geq 0}$ as opposed to simply $\mathbb{Z}_{\geq 0}$ because we note that, for example, the strings $\vv{y}=000101$ and $\vv{z}=101$ are different inputs entirely, and may be handled differently by our Turing machine, even though their decimal values are identical.  Therefore, we allow one degree of freedom to represent the length of the arbitrary input word $\vv{x}$, and the other to represent the decimal value of the arbitrary input word $\vv{x}$.  Using this fact, we can partition our input language into four unique subsets, and engage in a 'proof by cases' on an arbitrary member of each such subset.\\
 \begin{adjustwidth}{0.5cm}{}
 	\textbf{Case 1:} Assume $\vv{x}$ is a binary string of even weight and leading character '0'.  Observe that $\delta(q_{1}, 0) = (q_{3}, 0, R)$, therefore the Turing machine will enter state $q_{3}$ after observing the input string's leading '0' character.  Note that since the Turing machine has yet to observe a '1' character, there still exist $2n : n \in \mathbb{Z}_{\geq 1}$ '1' characters remaining in the input string.  Also note that $\delta(q_{3}, 0) = (q_{3}, 0, R)$, meaning that the Turing machine will remain in state $q_{3}$ until it inevitably observes a '1' character.  Since $\delta(q_{3}, 1) = (q_{2}, 1, R)$, any time the Turing machine observes a '1' character from state $q_{3}$, it will transition to state $q_{2}$ as a result.  The above is true with regard to state $q_{2}$ as well, and the Turing machine will transition from state $q_{2}$ to state $q_{3}$ upon observation of a '1' character.  Since we start in state $q_{3}$, and there are $2n$ '1' characters remaining in the input string, we can expect this transition between states $q_{3}$ and $q_{2}$ to take place a total of $2n$ times, leaving the Turing machine in state $q_{3}$ reading the character $\textvisiblespace$.  The Turing machine will terminate in state $q_{accept}$ since $\delta(q_{3}, \textvisiblespace) = (q_{accept}, \textvisiblespace, R)$ as expected.\\
 \end{adjustwidth}
@@ -203,7 +207,7 @@ Alan Turing, during the 20th century, used similar concepts from computability t
 \end{prf}
 
 \section{Conclusions}
-Here we finally discuss the conclusions of the paper
+Throughout this paper we have provided a breif introduction to the essentials of the theory of computation. We give a formal definition of the Turing machine, and we emphasize its signafcance as the mechanism by which one may prove if a function is indeed computable.  We rigorously prove that a Turing machine can decide whether the weight of an arbitrary binary string is even by showing that there exists at least one Turing machine which terminates as expected for any given binary string input.  Following our proof of computablity, we present the Halting Problem and its proof in order to exemplify how one might prove that a language is not Turing decidable.  The above discussions results are but a small window into the theory of computation.  These abstract mathematical ideas underly all computations and are the fundamental underpinings of our computational world.  Computer science continues to evolve both as an engineering descipline and a theoretical pursuit.  Nevertheless, it's modern instantation began with the conception of the Turing Machine and a proof showing that there are some functions which are and are not computable.
 
 \begin{thebibliography}{100}
 	\bibitem{1} National Research Council. (1999). Funding a Revolution: Government Support for Computing Research. Washington, DC: The National Academies Press. https://doi.org/10.17226/6323.

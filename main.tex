@@ -104,7 +104,7 @@ An effective model for the general-purpose computer is the Turing Machine, devel
 \begin{exmp}
 Let's imagine a Turing machine running an algorithm which decides whether a binary string of length $n : n \in \mathbb{Z}_{\geq 0}$ has an even weight (number of 1s in the binary string).  It might run the following algorithm:
 \begin{enumerate}
-	\item Read the frist bit of the string
+	\item Read the first bit of the string
 	\item If the first bit of the string is a '0', transition to state $q_{3}$.
 	\item If the first bit of the string is a '1', transition to state $q_{2}$.
 	\item While in states $q_{2}$ and $q_{3}$, transition to the other state if a '1' is read, remain in current state if '0' is read.
@@ -173,7 +173,7 @@ The outcomes observed in \textbf{Example 3.1} are rather self-evident in the def
 \end{defin}
 \noindent Any combination of english characters imaginable will certainly be a member of the language $L_{english}$ which is defined on the alphabet $A_{english}$ mentioned previously.
 \begin{defin}
-	A language $L$ is \textbf{Turing-decidable} if there exists some Turing machine $M$ such that, for each input word $\vv{x} \in L$, $M$ either accepts or rejects it. \cite{2}
+	A language $L$ is \textbf{Turing-decidable} if there exists some Turing machine $M$ such that, for each input word $\vv{x} \in L$, $M$ terminates in either state $q_{accept}$ or $q_{reject}$ \cite{2}
 \end{defin}
 \noindent The above definitions are those which found much of the theory of computability.  It does considering the Church-Turing thesis, and the wealth of empirical evidence backing it, albeit there is no single, rigorous mathematical proof for this thesis.  Essentially, one interpretation of the thesis states that if one wishes to prove that a certain operation is computable, one can do so by constructing a Turing machine which terminates for all possible inputs into that operation \cite{4}.  To display this, we will prove that the binary 'even weight verification' function introduced in \textbf{Example 3.1} is a computable function.
 \begin{prf}

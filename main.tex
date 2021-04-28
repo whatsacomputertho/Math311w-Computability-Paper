@@ -25,7 +25,19 @@
 \maketitle
 
 \section{Introduction}
-In the age of digital communications, it is difficult to imagine how, in a world without digital computers, one might work toward the development of one.  As a result, often overlooked are the initial developments which led to today's digital age.  Nevertheless, the emergence of digital computers would not be possible without initial, groundbreaking developments in mathematical logic and information theory from significant engineers and mathematicians like Alan Turing and Claude Shannon.  Throughout this paper, we discuss computability in a rigorous, self-contained manner - both its proof by construction and its disproof by contradiction, with examples of each.  Furthermore, we aim to provide our readers with some historical insight into the development of these methods in order to build both an appreciation of their significance, and of the current challenges researchers face as attempts are made to further progress in theoretical computer science \cite{1}.
+Our world’s infastructure is entirely reliant upon digital computers. Despite
+their ubiquity, the high levels of abstraction at which such devices are typically
+used leads the majority of users to have little to knowledge of their underlying
+functionalitiy. It is in the spirit of elucidating the working of computational
+devices that we discuss the most essential topic in the theory of computation, the
+computatability of functions. We begin by providing a list of requisite definitions
+nessacry to define and describe mechanisms by which one may determine if a
+function is computable. We introduce the reader to the Turing Machine, a
+conceptual model of an all purpose computer. Once familiarzing the reader
+with the aforementioned concepts we invoke the use of a Turing Machine to
+rigorously prove of the computability of an even weight verification function for
+a binary input string. We conclude with a discussion of the Halting Problem in
+order to further extend our discussion to noncomputable functions. \cite{1}
 
 \section{Background}
 Elementary set theory is of crucial importance in the understanding of the formal notion of computibility. Before diving into the concept of computability, one must understand the relevant prerequisite concepts in elementary set theory which enable the various definitions in theoretical computer science definitions to be given.
@@ -99,56 +111,44 @@ Let's imagine a Turing machine running an algorithm which verifies whether or no
 \begin{itemize}
 	\item $Q \coloneq \{ q_{1}, q_{2}, q_{3}, q_{4}, q_{5}, q_{accept}, q_{reject} \}$
 	\item $\Sigma \coloneq \{ 0, 1 \}$
-	\item $\Gamma \coloneq \{ 0, 1, x, \textvisiblespace \}$
+	\item $\Gamma \coloneq \{ 0, 1, \textvisiblespace \}$
 	\item The transition function $\delta$ is given as an instruction set (see figure 2)
 \end{itemize}
 \begin{figure}[h]
-	\begin{tikzpicture}[scale=0.75, transform shape]
-		\node[state, initial] (q1) {$q_{1}$};
-		\node[state, below=of q1] (q2) {$q_{2}$};
-		\node[state, right=of q2, xshift=100] (q3) {$q_{3}$};
-		\node[state, right=of q1, xshift=100] (q4) {$q_{4}$};
-		\node[state, below=of q3] (q5) {$q_{5}$};
-		\node[state, below=of q2] (qreject) {$q_{reject}$};
-		\node[state, right=of q4, xshift=50] (qaccept) {$q_{accept}$};
-		\draw[->] (q1) edge node[yshift=10, xshift=-20] {\tt $\textvisiblespace \rightarrow R$} node[xshift=-20] {\tt $x \rightarrow R$} (q2);
-		\draw[->] (q1) edge node[yshift=6] {\tt $0 \rightarrow R$} (q4);
-		\draw[->] (q1) edge node[rotate=-20, yshift=-6, xshift=-15] {\tt $1 \rightarrow x , R$} (q3);
-		\draw[->] (q2) edge[loop left] node[yshift=5] {\tt $0 \rightarrow R$} node[yshift=-5] {\tt $x \rightarrow R$}(q2);
-		\draw[->] (q2) edge node[yshift=6] {\tt $1 \rightarrow x , R$} (q3);
-		\draw[->] (q2) edge node[xshift=-20] {\tt $\textvisiblespace \rightarrow R$} (qreject);
-		\draw[->] (q3) edge[loop right] node[yshift=5] {\tt $0 \rightarrow R$} node[yshift=-5] {\tt $x \rightarrow R$} (q3);
-		\draw[->] (q3) edge[bend right] node[xshift=20] {\tt $1 \rightarrow R$} (q4);
-		\draw[->] (q3) edge node[xshift=20] {\tt $\textvisiblespace \rightarrow L$} (q5);
-		\draw[->] (q4) edge[bend right] node[xshift=-20] {\tt $1 \rightarrow x , R$} (q3);
-		\draw[->] (q4) edge[loop above] node[yshift=10] {\tt $x \rightarrow R$} node {\tt $0 \rightarrow R$} (q4);
-		\draw[->] (q4) edge node[yshift=5] {\tt $\textvisiblespace \rightarrow R$} (qaccept);
-		\draw[->] (q5) edge node[rotate=-20, yshift=-5, xshift=-5] {\tt $\textvisiblespace \rightarrow R$} (q2);
-		\draw[->] (q5) edge[loop right] node[yshift=10] {\tt $0 \rightarrow L$} node[yshift=0] {\tt $1 \rightarrow L$} node[yshift=-10] {\tt $x \rightarrow L$} (q5);
-	\end{tikzpicture}
+	\begin{tabular}{ c }
+	$\delta(q_{1}, 0) = (q_{3}, 0, R)$ \\
+	$\delta(q_{1}, 1) = (q_{2}, 1, R)$ \\
+	$\delta(q_{1}, \textvisiblespace) = (q_{3}, \textvisiblespace, R)$ \\
+	$\delta(q_{2}, 0) = (q_{2}, 0, R)$ \\
+	$\delta(q_{2}, 1) = (q_{3}, 1, R)$ \\
+	$\delta(q_{2}, \textvisiblespace) = (q_{reject}, \textvisiblespace, R)$ \\
+	$\delta(q_{3}, 0) = (q_{3}, 0, R)$ \\
+	$\delta(q_{3}, 1) = (q_{2}, 1, R)$ \\
+	$\delta(q_{3}, \textvisiblespace) = (q_{accept}, \textvisiblespace, R)$
+	\end{tabular}
 	\centering
-	\caption{The transition function $\delta$ given as a finite state machine}
+	\caption{The transition function $\delta$ given as an instruction set}
 \end{figure}
 \noindent Using the transition function $\delta$ as given by figure 2, we can show every configuration for a given input string.  For the sake of the example, let's consider the string $\vv{x} = 1101$.  We have the following configurations (read down each column, and then from left to right):
 \begin{center}
-\begin{tabular}{ c c c c c }
-	$q_{1}1101$ & $x1q_{5}0x$ & $xxq_{3}0x$ & $q_{5}xx0x$ & $xx0xq_{2}\textvisiblespace$ \\
-	$xq_{3}101$ & $xq_{5}10x$ & $xx0q_{3}x$ & $q_{5}\textvisiblespace xx0x$ & $xx0x\textvisiblespace q_{reject}$ \\
-	$x1q_{4}01$ & $q_{5}x10x$ & $xx0xq_{3}\textvisiblespace$ & $q_{2}xx0x$ \\
-	$x10q_{4}1$ & $q_{5}\textvisiblespace x10x$ & $xx0q_{5}x$ & $xq_{2}x0x$ \\
-	$x10xq_{3}\textvisiblespace$ & $q_{2}x10x$ & $xxq_{5}0x$ & $xxq_{2}0x$ \\
-	$x10q_{5}x$ & $xq_{2}10x$ & $xq_{5}x0x$ & $xx0q_{2}x$
+\begin{tabular}{ c }
+	$q_{1}1101$ \\
+	$1q_{2}101$ \\
+	$11q_{3}01$ \\
+	$110q_{3}1$ \\
+	$1101q_{2} \textvisiblespace$ \\
+	$1101 \textvisiblespace q_{reject}$
 \end{tabular}
 \end{center}
 \noindent We can clearly see that, since our input string has an odd number of '1' characters, our turing machine rejects it, signifying that it does not have an even weight.  Next, let us walk through each configuration of the even-weighted input string $\vv{x} = 1001$.  We have the following configurations:
 \begin{center}
 \begin{tabular}{ c }
 	$q_{1}1001$ \\
-	$xq_{3}001$ \\
-	$x0q_{3}01$ \\
-	$x00q_{3}1$ \\
-	$x00xq_{4}\textvisiblespace$ \\
-	$x00x\textvisiblespace q_{accept}$
+	$1q_{2}001$ \\
+	$10q_{2}01$ \\
+	$100q_{2}1$ \\
+	$1001q_{3}\textvisiblespace$ \\
+	$1001\textvisiblespace q_{accept}$
 \end{tabular}
 \end{center}
 \end{exmp}
@@ -175,18 +175,18 @@ The outcomes observed in \textbf{Example 3.1} are rather self-evident in the def
 \begin{prf}
 	First, let us note that the input alphabet accepted by our Turing machine (its definition given in $\textbf{Example 3.1}$) $\Sigma \coloneq \{ 0, 1 \}$.  This would imply that the \textbf{language} $L$ emergent from this alphabet is simply the set of all binary strings (or \textbf{words}) of arbitrary length $n \geq 1$.  Thus, our input language can be enumerated using $\mathbb{N}^{2}$.  We must use $\mathbb{N}^{2}$ as opposed to simply $\mathbb{N}$ because we note that, for example, the strings $\vv{y}=000101$ and $\vv{z}=101$ are different inputs entirely, and will be handled differently by our Turing machine, even though their decimal values are identical.  Therefore, we allow one degree of freedom to represent the length of the arbitrary input word $\vv{x}$, and the other to represent the decimal value of the arbitrary input word $\vv{x}$.  Using this fact, we can partition our input language into four unique subsets, and engage in a 'proof by cases' on an arbitrary member of each such subset.\\
 \begin{adjustwidth}{0.5cm}{}
-	\textbf{Case 1:} Let $\vv{x} \in L$ be an arbitrary-length input string with even weight, and starting with the '0' character.  Our Turing machine will begin in state $q_{4}$.  Since we know that there are an even number of '1' characters in $\vv{x}$, we can expect our Turing machine to 'bounce' back and forth between states $q_{4}$ and $q_{3}$ an even number of times, crossing off every other '1' character with an 'x' character, until ultimately producing some configuration $\dots q_{4}\textvisiblespace$.  This will finally yield the configuration $\dots \textvisiblespace q_{accept}$, and the Turing machine will terminate in state $q_{accept}$ as expected.\\
+	\textbf{Case 1:} Assume $\vv{x}$ is a binary string of even weight and leading character '0'.  Observe that $\delta(q_{1}, 0) = (q_{3}, 0, R)$, therefore the Turing machine will enter state $q_{3}$ after observing the input string's leading '0' character.  Note that since the Turing machine has yet to observe a '1' character, there still exist $2n : n \in \mathbb{Z}_{\geq 1}$ '1' characters remaining in the input string.  Also note that $\delta(q_{3}, 0) = (q_{3}, 0, R)$, meaning that the Turing machine will remain in state $q_{3}$ until it inevitably observes a '1' character.  Since $\delta(q_{3}, 1) = (q_{2}, 1, R)$, any time the Turing machine observes a '1' character from state $q_{3}$, it will transition to state $q_{2}$ as a result.  The above is true with regard to state $q_{2}$ as well, and the Turing machine will transition from state $q_{2}$ to state $q_{3}$ upon observation of a '1' character.  Since we start in state $q_{3}$, and there are $2n$ '1' characters remaining in the input string, we can expect this transition between states $q_{3}$ and $q_{2}$ to take place a total of $2n$ times, leaving the Turing machine in state $q_{3}$ reading the character $\textvisiblespace$.  The Turing machine will terminate in state $q_{accept}$ since $\delta(q_{3}, \textvisiblespace) = (q_{accept}, \textvisiblespace, R)$ as expected.\\
 \end{adjustwidth}
 \begin{adjustwidth}{0.5cm}{}
-	\textbf{Case 2:} Let $\vv{x} \in L$ be an arbitrary-length input string with even weight, and starting with the '1' character.  Our Turing machine will begin in state $q_{3}$ with the first '1' character crossed off.  Since we know that there are an even number of '1' characters, and that we have already crossed off one of these characters, we can expect our Turing machine to 'bounce' back and forth between states $q_{3}$ and $q_{4}$ an odd number of times, crossing off every other '1' character with an 'x' character.  Ultimately, this will produce the configuration $\dots q_{4}\textvisiblespace$, which will finally yield the configuration $\dots \textvisiblespace q_{accept}$, and the Turing machine will terminate in state $q_{accept}$ as expected.\\
+	\textbf{Case 2:} Assume $\vv{x}$ is a binary string of even weight and leading character '1'.  Observe that $\delta(q_{1}, 1) = (q_{2}, 1, R)$, therefore the Turing machine will enter state $q_{2}$ after observing the input string's leading '1' character.  Note that since the Turing machine has observed one '1' character, there still exist $2n - 1 : n \in \mathbb{Z}_{\geq 1}$ '1' characters remaining in the input string.  As noted in \textbf{case 1}, this means that the Turing machine will inevitably make $2n - 1$ transitions between state $q_{2}$ and $q_{3}$, leaving the Turing machine in state $q_{3}$ reading the character $\textvisiblespace$.  The Turing machine will terminate in state $q_{accept}$ since $\delta(q_{3}, \textvisiblespace) = (q_{accept}, \textvisiblespace, R)$ as expected.\\
 \end{adjustwidth}
 \begin{adjustwidth}{0.5cm}{}
-	\textbf{Case 3:} Let $\vv{x} \in L$ be an arbitrary-length input string with an odd number of '1' characters, and starting with the '1' character.  Our Turing machine will begin in state $q_{3}$ with the first '1' character crossed off.  Since we know that there are an odd number of '1' characters, and that we have already crossed off one of these characters, we can expect our Turing machine to 'bounce' back and forth between states $q_{3}$ and $q_{4}$ an even number of times, crossing off every other '1' character with an 'x' character.  Ultimately, this will produce the configuration $\dots q_{3}\textvisiblespace$, which will trigger the $q_{5}$ state, eventually returning the system to the $q_{2}$ state with the read-write head reading the first character of the string.  Note that, since the input string had an odd weight, but had the first '1' character crossed off before the initial loop between states $q_{3}$ and $q_{4}$, it now has an odd number of '1' characters crossed off, and thus, an even number of '1' characters remaining.  From here, the machine will proceed with this process recursively until it crosses off all '1' characters, and is left with the configuration $q_{2} \dots$, where $q_{2}$ will inevitably sweep through the entire string, producing the configuration $\dots q_{2} \textvisiblespace$.  As a result, the Turing machine will transition to the configuration $\dots \textvisiblespace q_{reject}$ as expected for our odd-weighted input string.\\
+	\textbf{Case 3:} Assume $\vv{x}$ is a binary string of odd weight and leading character '0'.  Observe that $\delta(q_{1}, 0) = (q_{3}, 0, R)$, therefore the Turing machine will enter state $q_{3}$ after observing the input string's leading '0' character.  Note that since the Turing machine has yet to observe a '1' character, there still exist $2n + 1 : n \in \mathbb{Z}_{\geq 0}$ '1' characters remaining in the input string.  As noted in \textbf{case 1}, this means that the Turing machine will inevitably make $2n + 1$ transitions between state $q_{3}$ and $q_{2}$, leaving the Turing machine in state $q_{2}$ reading the character $\textvisiblespace$.  The Turing machine will terminate in state $q_{reject}$ since $\delta(q_{2}, \textvisiblespace) = (q_{reject}, \textvisiblespace, R)$ as expected.\\
 \end{adjustwidth}
 \begin{adjustwidth}{0.5cm}{}
-	\textbf{Case 4:} Let $\vv{x} \in L$ be an arbitrary-length input string with odd weight, and starting with the '0' character.  Our Turing machine will begin in state $q_{4}$.  Since we know that there are an odd number of '1' characters, we can expect our Turing machine to 'bounce' back and forth between states $q_{4}$ and $q_{3}$, crossing off every other '1' character with an 'x' character.  Ultimately, this will produce the configuration $\dots q_{3}\textvisiblespace$, which will trigger the $q_{5}$ state, eventually returning the system to the $q_{2}$ state with the read-write head reading the first character of the string.  Note that, since the input string had an odd weight, and since the transition between $q_{4}$ and $q_{3}$ took place an odd number of times starting with $q_{4}$, then in the current state with $q_{2}$ back at the beginning of the input string, we have the original input string, but with an odd number of '1' characters crossed off, and thus, an even number of '1' characters remaining.  From here, our Turing machine will engage in an identical recursive process as given in \textbf{case 3}, meaning that it will terminate in state $q_{reject}$ as expected.\\
+	\textbf{Case 4:} Assume $\vv{x}$ is a binary string of odd weight and leading character '1'.  Observe that $\delta(q_{1}, 1) = (q_{2}, 1, R)$, therefore the Turing machine will enter state $q_{2}$ after observing the input string's leading '1' character.  Note that since the Turing machine has observed one '1' character, there still exist $2n + 1 - 1 = 2n : n \in \mathbb{Z}_{\geq 0}$ '1' characters remaining in the input string.  As noted in \textbf{case 1}, this means that the Turing machine will inevitably make $2n$ transitions between state $q_{2}$ and $q_{3}$, leaving the Turing machine in state $q_{2}$ reading the character $\textvisiblespace$.  The Turing machine will terminate in state $q_{reject}$ since $\delta(q_{2}, \textvisiblespace) = (q_{reject}, \textvisiblespace, R)$ as expected. \\
 \end{adjustwidth}
-Terefore, the binary 'even weight verification' function is computable, as it terminates for all input words $\vv{x} \in L$. \qedsymbol
+	\noindent Therefore, the Turing machine will terminate as expected for any given input. $\qedsymbol$
 \end{prf}
 
 \section{The Halting Problem}

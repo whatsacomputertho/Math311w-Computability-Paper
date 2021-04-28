@@ -28,7 +28,7 @@
 In the age of digital communications, it is difficult to imagine how, in a world without digital computers, one might work toward the development of one.  As a result, often overlooked are the initial developments which led to today's digital age.  Nevertheless, the emergence of digital computers would not be possible without initial, groundbreaking developments in mathematical logic and information theory from significant engineers and mathematicians like Alan Turing and Claude Shannon.  Throughout this paper, we discuss computability in a rigorous, self-contained manner - both its proof by construction and its disproof by contradiction, with examples of each.  Furthermore, we aim to provide our readers with some historical insight into the development of these methods in order to build both an appreciation of their significance, and of the current challenges researchers face as attempts are made to further progress in theoretical computer science \cite{1}.
 
 \section{Background}
-Elementary set theory and Mathematical logic are of crucial importance to the understanding of the formal notion of computibility. Before diving into the Turing Machine that essentially tackles the problems of solvability and insolvability in Mathematics, one needs to be introdued to these prerequisites beforehand.
+Elementary set theory is of crucial importance in the understanding of the formal notion of computibility. Before diving into the concept of computability, one must understand the relevant prerequisite concepts in elementary set theory which enable the various definitions in theoretical computer science definitions to be given.
 \begin{defin}
 A \textbf{set} is a collection of objects, known as its \textbf{elements}/\textbf{members}.
 \begin{itemize}
@@ -54,6 +54,9 @@ $X_{1}\times X_{2}\times X_{3} \times {...} \times X_{n} \coloneq \{( x_{1},x_{2
 \item For a set X and positive integer n, the \textbf{Cartesian power} of the power n is defined by
 $X^{n} \coloneq X \times {...} \times X = \{(x_{1},{...},x_n) ; x_{1},x_{2},{...},x_{n}\in X\}$
 \end{itemize}
+\end{defin}
+\begin{defin}
+A \textbf{function} $f \subset X \times Y$, such that each $x \in X$ is mapped to exactly one $y \in Y$, forming the 2-tuple (or ordered pair) $(x, y) \in f$
 \end{defin}
 
 \section{Turing Machines}

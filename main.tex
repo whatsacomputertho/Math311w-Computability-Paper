@@ -30,34 +30,35 @@ In the age of digital communications, it is difficult to imagine how, in a world
 \section{Background}
 Elementary set theory is of crucial importance in the understanding of the formal notion of computibility. Before diving into the concept of computability, one must understand the relevant prerequisite concepts in elementary set theory which enable the various definitions in theoretical computer science definitions to be given.
 \begin{defin}
-A \textbf{set} is a collection of objects, known as its \textbf{elements}/\textbf{members}.
+A \textbf{set} is a well-defined collection of objects, known as its \textbf{members}.
 \begin{itemize}
-\item $a\in S$ represents that a is an element of S
-\item $a \notin S$ represents that a is not an element of S
+\item $a \in S$ represents that a is 'in' $S$, or that a is a member of $S$
+\item $a \notin S$ represents that a is not a member of S
 \item $\emptyset$ represents an empty set
 \end{itemize}
 \end{defin}
 \begin{defin}
-If every element of Y is also an element of X, then we say that y is a \textbf{subset} of x, and write $Y\subseteq X$.
-If y is a subset of X but not equal to X, then we say that y is a \textbf{proper subset} of X, and write $Y\subset X$.
+If each element $y \in Y$ is such that $y \in X$, then y is a \textbf{subset} of x, which can be written as $Y\subseteq X$.
+If $Y$ is a subset of $X$, but there exsists at least one $x \in X$ such that $x \notin Y$ then we say that $Y$ is a \textbf{proper subset} of X, which can be written as $Y \subset X$.
 \begin{itemize}
-\item Every set X contains at least the subsets X and $\emptyset$; and these are distinct unless X = $\emptyset$.
+\item Any set $X$ has the subsets $X \subseteq X$ and $\emptyset \subseteq X$, which are distinct unless X is empty.
 \end{itemize}
 \end{defin}
 \begin{defin}
-The \textbf{Cartesian product} of two sets X and Y is defined to be the set of all ordered pairs whose first entry comes from X and whose second entry comes from Y.
+The \textbf{Cartesian product} $X \times Y \coloneq \{ (x, y): x \in X$ and $y \in Y \}$, is defined to be the set of all ordered pairs such that $x \in X$ and $y \in Y$.
 \begin{itemize}
-\item $X \times Y \coloneq \{ (x, y): x \in X$ and $y \in Y \}$
-\item The cartesian product of a set X with itself is often denoted as $X^{2}$.
-\item Cartesian product of more than two sets can be defined in a similar way
-$X_{1}\times X_{2}\times X_{3} \times {...} \times X_{n} \coloneq \{( x_{1},x_{2},x_{3},{...},x_{n}):x_{i}\in X_{i}$ for each $i = 1,2,3,{...},n\}$
-\item For a set X and positive integer n, the \textbf{Cartesian power} of the power n is defined by
-$X^{n} \coloneq X \times {...} \times X = \{(x_{1},{...},x_n) ; x_{1},x_{2},{...},x_{n}\in X\}$
+\item The Cartesian product of more than two sets may be given as
+$X_{1}\times X_{2} \times {...} \times X_{n} \coloneq \{( x_{1},x_{2},{...},x_{n}):x_{i}\in X_{i}$ for each $i = 1,2,{...},n\}$
+\item For a set $X$ and some $n \in \mathbb{Z}_{\geq 0}$, the nth \textbf{Cartesian power} of $X$ is defined by
+$X^{n} \coloneq X \times {...} \times X = \{(x_{1},{...},x_n) ; x_{1},x_{2},{...},x_{n}\in X\}$, and it is essentially the cartesian product of $X$ by itself $n$ times.
 \end{itemize}
 \end{defin}
 \begin{defin}
 A \textbf{function} $f \subset X \times Y$, such that each $x \in X$ is mapped to exactly one $y \in Y$, forming the 2-tuple (or ordered pair) $(x, y) \in f$
 \end{defin}
+\begin{itemize}
+\item Note that the sets $X$ and $Y$ above are arbitrary, opening the possibility for a function to be potentially defined from the cartesian product of multiple arbitrary sets to the cartesian product of multiple arbitrary sets.
+\end{itemize}
 
 \section{Turing Machines}
 An effective model for the general-purpose computer is the Turing Machine, developed by Alan Turing in 1936 \cite{2}.  The Turing Machine is a conceptual model of a general-purpose computing machine which involves the following conceptual components:

@@ -70,11 +70,11 @@ A \textbf{function} $f \subseteq X \times Y$, such that each $x \in X$ is mapped
 \end{defin}
 
 \section{Turing Machines}
-An effective model for the general-purpose computer is the Turing Machine, developed by Alan Turing in 1936 \cite{2}.  The Turing Machine is a conceptual model of a general-purpose computing machine which involves the following conceptual components:
+The Turing Machine is a general-purpose computing device capable of performing any given algorithmic computation.\cite{2}.  While the model itself is an abstraction, any instantion of a Turing Machine, physical or platonic, is comprised of the following:
 \begin{itemize}
-	\item A "control box" which stores a finitely-large program
-	\item A tape with infinite spaces in which symbols can be stored, read, and written
-	\item A read-write mechanism for the tape \cite{3}
+	\item A "control box" which stores a program of finite size, formally known as the \textbf{transition function}.
+	\item A tape with a potentially infinite number of memory spaces in which symbols can be stored, read, and written into each indivdua spacel.
+	\item A read-write mechanism which the tape is fed through. \cite{3}
 \end{itemize}
 \begin{figure}[h]
 	\includegraphics[width=0.85\textwidth]{figure-3-1}
@@ -82,6 +82,25 @@ An effective model for the general-purpose computer is the Turing Machine, devel
 	\setlength{\belowcaptionskip}{-10pt}
 	\caption{A simple visualization of a Turing machine.  Note that spaces along the tape would be filled with symbols which can be read and written using the read-write head on the machine.}
 \end{figure}
+
+\noindent Prior to presenting the formal definiton of a Turing Machine we must introduce the following items.
+
+\begin{defin}
+	An \textbf{alphabet} is a finite set of arbitrary characters which can be used in some code or language.
+\end{defin}
+\noindent For example, the english alphabet (ignoring all punctuation and special characters) may define its alphabet as $A_{english} \coloneq \{ a, b, ... , z \}$
+\begin{defin}
+	A \textbf{word} $\vv{x}$ is a string of characters, each of which belonging to some alphabet $A$.
+\end{defin}
+\noindent Following from the previous example, we may construct words of varying lengths using the english alphabet, such as "the", "dog", "was", and "running".  Each character composing each of these words belong to the alphabet $A_{english}$ defined above.
+\begin{defin}
+	A \textbf{language} $L$ is the set of all possible words $\vv{x} \in L$ of varying length, over some alphabet $A$.
+\end{defin}
+
+\noindent Any combination of english characters imaginable will certainly be a member of the language $L_{english}$ which is defined on the alphabet $A_{english}$.\\
+
+\noindent Having introduced the items above we may now develope a formal definiton of the Turing Machine.
+
 \begin{defin}
 	A \textbf{Turing Machine} is a 7-Tuple, $(Q, \Sigma, \Gamma, \delta, q_{0}, q_{accept}, q_{reject})$, where:
 \end{defin}
@@ -100,9 +119,9 @@ An effective model for the general-purpose computer is the Turing Machine, devel
 \begin{defin}
 	A \textbf{computation} is a sequence of configurations which represents the sequence of transition function operations run by a Turing machine given some input. \cite{6}
 \end{defin}
-\noindent To exemplify these definitions, we can introduce a new instance of a Turing Machine with a specific input, and an algorithm running on the input.
+\noindent To exemplify these definitions, we provide an instantiation of a Turing Machine with a specific input, and an algorthim, running on the input.
 \begin{exmp}
-Let's imagine a Turing machine running an algorithm which decides whether a binary string of length $n : n \in \mathbb{Z}_{\geq 0}$ has an even weight (number of 1s in the binary string).  It might run the following algorithm:
+Let's imagine a Turing machine running an algorithm which decides whether a binary string of length $n : n \in \mathbb{Z}_{\geq 0}$ has an even weight, such that number of 1s in the binary string is even.  Our Turing Machine will execute the following algorithm:
 \begin{enumerate}
 	\item Read the first bit of the string
 	\item If the first bit of the string is a '0', transition to state $q_{3}$.
@@ -111,14 +130,18 @@ Let's imagine a Turing machine running an algorithm which decides whether a bina
 	\item If in state $q_{2}$ and reading '$\textvisiblespace$' character, terminate in state $q_{reject}$
 	\item If in state $q_{3}$ and reading '$\textvisiblespace$' charactre, terminate in state $q_{accept}$.
 \end{enumerate}
-\noindent This particular Turing machine can be given formally as $M \coloneq (Q, \Sigma, \Gamma, \delta, q_{1}, q_{accept}, q_{reject})$ such that:
+\noindent This particular Turing machine may be given formally as \\
+
+\centerline{$M \coloneq (Q, \Sigma, \Gamma, \delta, q_{1}, q_{accept}, q_{reject})$}
+
+\noindent such that:
 \begin{itemize}
 	\item $Q \coloneq \{ q_{1}, q_{2}, q_{3}, q_{accept}, q_{reject} \}$
 	\item $\Sigma \coloneq \{ 0, 1 \}$
 	\item $\Gamma \coloneq \{ 0, 1, \textvisiblespace \}$
-	\item The transition function $\delta$ is given as an instruction set (see figure 2)
+	\item The transition function $\delta$ is given as the following instruction set
 \end{itemize}
-\begin{figure}[h]
+\begin{center}
 	\begin{tabular}{ c }
 	$\delta(q_{1}, 0) = (q_{3}, 0, R)$ \\
 	$\delta(q_{1}, 1) = (q_{2}, 1, R)$ \\
@@ -130,10 +153,8 @@ Let's imagine a Turing machine running an algorithm which decides whether a bina
 	$\delta(q_{3}, 1) = (q_{2}, 1, R)$ \\
 	$\delta(q_{3}, \textvisiblespace) = (q_{accept}, \textvisiblespace, R)$
 	\end{tabular}
-	\centering
-	\caption{The transition function $\delta$ given as an instruction set}
-\end{figure}
-\noindent Using the transition function $\delta$ as given by figure 2, we can show every configuration for a given input string.  For the sake of the example, let's consider the string $\vv{x} = 1101$.  We have the following configurations (read down each column, and then from left to right):
+\end{center}
+\noindent Using the transition function $\delta$ as given above, we can show every configuration for a given input string.  For the sake of the example, let's consider the string $\vv{x} = 1101$.  We have the following configurations (read down each column, and then from left to right):
 \begin{center}
 \begin{tabular}{ c }
 	$q_{1}1101$ \\
@@ -144,7 +165,9 @@ Let's imagine a Turing machine running an algorithm which decides whether a bina
 	$1101 \textvisiblespace q_{reject}$
 \end{tabular}
 \end{center}
-\noindent We can clearly see that, since our input string has an odd number of '1' characters, our turing machine rejects it, signifying that it does not have an even weight.  Next, let us walk through each configuration of the even-weighted input string $\vv{x} = 1001$.  We have the following configurations:
+\noindent Since our input string has an odd number of '1' characters our Turing machine terminartes in state $q_{reject}$. Thus, $\vv{x}$ is not of even weight. \\
+
+\noindent Let us now walk through each configuration of the even-weighted input string $\vv{x} = 1001$.  We have the following configurations:
 \begin{center}
 \begin{tabular}{ c }
 	$q_{1}1001$ \\
@@ -156,25 +179,14 @@ Let's imagine a Turing machine running an algorithm which decides whether a bina
 \end{tabular}
 \end{center}
 \end{exmp}
-\noindent Now, since our input string has an even number of '1' characters, our turing machine accepts it. \cite{2}
+\noindent Now, since our input string has an even number of '1' characters, our Turing machine terminates in the state $q_{accept}$. \cite{2}
 
 \section{Proof of Computability by Construction}
 The outcomes observed in \textbf{Example 3.1} are rather self-evident in the definition of a Turing machine, as two of its parameters are the accept state $q_{accept}$ and the reject state $q_{reject}$.  If a Turing machine ever reaches either of these states, then its algorithm will terminate.  However, a third potential outcome when running an algorithm using a Turing machine is that the algorithm may never terminate.  It is this possibility, the possibility that a Turing machine may run indefinitely for some input, from which much of the theory of computability emerges.  In this section, we will build the definitions which found the theory of computability, and explore how we may prove that a function is computable.
-\begin{defin}
-	An \textbf{alphabet} is a finite set of arbitrary characters which can be used in some code or language.
+
+\begin{defin} A language $L$ is \textbf{Turing-decidable} if there exists some Turing machine $M$ such that, for each input word $\vv{x} \in L$, $M$ terminates in either state $q_{accept}$ or $q_{reject}$ \cite{2}
 \end{defin}
-\noindent For example, the english alphabet (ignoring all punctuation and special characters) may define its alphabet as $A_{english} \coloneq \{ a, b, ... , z \}$
-\begin{defin}
-	A \textbf{word} $\vv{x}$ is a string of characters, each of which belonging to some alphabet $A$.
-\end{defin}
-\noindent Following from the previous example, we may construct words of varying lengths using the english alphabet, such as "the", "dog", "was", and "running".  Each character composing each of these words belong to the alphabet $A_{english}$ defined above.
-\begin{defin}
-	A \textbf{language} $L$ is the set of all possible words $\vv{x} \in L$ of varying length, over some alphabet $A$.
-\end{defin}
-\noindent Any combination of english characters imaginable will certainly be a member of the language $L_{english}$ which is defined on the alphabet $A_{english}$ mentioned previously.
-\begin{defin}
-	A language $L$ is \textbf{Turing-decidable} if there exists some Turing machine $M$ such that, for each input word $\vv{x} \in L$, $M$ terminates in either state $q_{accept}$ or $q_{reject}$ \cite{2}
-\end{defin}
+
 \noindent The above definitions are those which found much of the theory of computability.  It does considering the Church-Turing thesis, and the wealth of empirical evidence backing it, albeit there is no single, rigorous mathematical proof for this thesis.  Essentially, one interpretation of the thesis states that if one wishes to prove that a certain operation is computable, one can do so by constructing a Turing machine which terminates for all possible inputs into that operation \cite{4}.  To display this, we will prove that the binary 'even weight verification' function introduced in \textbf{Example 3.1} is a computable function.
 \begin{prf}
 	First, let us note that the input alphabet accepted by our Turing machine (its definition given in $\textbf{Example 3.1}$) $\Sigma \coloneq \{ 0, 1 \}$.  This would imply that the \textbf{language} $L$ emergent from this alphabet is simply the set of all binary strings (or \textbf{words}) of arbitrary length $n : n \in \mathbb{Z}_{\geq 0}$.  Thus, our input language can be enumerated using $\mathbb{Z}^{2}_{\geq 0}$.  We must use $\mathbb{Z}^{2}_{\geq 0}$ as opposed to simply $\mathbb{Z}_{\geq 0}$ because we note that, for example, the strings $\vv{y}=000101$ and $\vv{z}=101$ are different inputs entirely, and may be handled differently by our Turing machine, even though their decimal values are identical.  Therefore, we allow one degree of freedom to represent the length of the arbitrary input word $\vv{x}$, and the other to represent the decimal value of the arbitrary input word $\vv{x}$.  Using this fact, we can partition our input language into four unique subsets, and engage in a 'proof by cases' on an arbitrary member of each such subset.\\

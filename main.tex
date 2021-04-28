@@ -28,13 +28,33 @@
 In the age of digital communications, it is difficult to imagine how, in a world without digital computers, one might work toward the development of one.  As a result, often overlooked are the initial developments which led to today's digital age.  Nevertheless, the emergence of digital computers would not be possible without initial, groundbreaking developments in mathematical logic and information theory from significant engineers and mathematicians like Alan Turing and Claude Shannon.  Throughout this paper, we discuss computability in a rigorous, self-contained manner - both its proof by construction and its disproof by contradiction, with examples of each.  Furthermore, we aim to provide our readers with some historical insight into the development of these methods in order to build both an appreciation of their significance, and of the current challenges researchers face as attempts are made to further progress in theoretical computer science \cite{1}.
 
 \section{Background}
-Here we introduce the background section
-\subsection{Historical Background}
-Here we discuss the history behind computer science and its foundations in mathematics
-\subsection{Mathematical Logic and Set Theory}
-Here we discuss relevant concepts in mathematical logic and set theory
-\subsection{Finite State Machines}
-Here we discuss finite state machines, state diagrams, etc. to provide the necessary background to understand conceptual machines and understand Turing Machinces graphically
+Elementary set theory and Mathematical logic are of crucial importance to the understanding of the formal notion of computibility. Before diving into the Turing Machine that essentially tackles the problems of solvability and insolvability in Mathematics, one needs to be introdued to these prerequisites beforehand.
+\begin{defin}
+A \textbf{set} is a collection of objects, known as its \textbf{elements}/\textbf{members}.
+\begin{itemize}
+\item $a\in S$ represents that a is an element of S
+\item $a \notin S$ represents that a is not an element of S
+\item $\emptyset$ represents an empty set
+\end{itemize}
+\end{defin}
+\begin{defin}
+If every element of Y is also an element of X, then we say that y is a \textbf{subset} of x, and write $Y\subseteq X$.
+If y is a subset of X but not equal to X, then we say that y is a \textbf{proper subset} of X, and write $Y\subset X$.
+\begin{itemize}
+\item Every set X contains at least the subsets X and $\emptyset$; and these are distinct unless X = $\emptyset$.
+\end{itemize}
+\end{defin}
+\begin{defin}
+The \textbf{Cartesian product} of two sets X and Y is defined to be the set of all ordered pairs whose first entry comes from X and whose second entry comes from Y.
+\begin{itemize}
+\item $X \times Y \coloneq \{ (x, y): x \in X$ and $y \in Y \}$
+\item The cartesian product of a set X with itself is often denoted as $X^{2}$.
+\item Cartesian product of more than two sets can be defined in a similar way
+$X_{1}\times X_{2}\times X_{3} \times {...} \times X_{n} \coloneq \{( x_{1},x_{2},x_{3},{...},x_{n}):x_{i}\in X_{i}$ for each $i = 1,2,3,{...},n\}$
+\item For a set X and positive integer n, the \textbf{Cartesian power} of the power n is defined by
+$X^{n} \coloneq X \times {...} \times X = \{(x_{1},{...},x_n) ; x_{1},x_{2},{...},x_{n}\in X\}$
+\end{itemize}
+\end{defin}
 
 \section{Turing Machines}
 An effective model for the general-purpose computer is the Turing Machine, developed by Alan Turing in 1936 \cite{2}.  The Turing Machine is a conceptual model of a general-purpose computing machine which involves the following conceptual components:
@@ -71,12 +91,12 @@ Let's imagine a Turing machine running an algorithm which verifies whether or no
 	\item Return to the left-most character on the tape.
 	\item Return to step 1.
 \end{enumerate}
-\noindent This particular Turing machine can be given formally as $M = (Q, \Sigma, \Gamma, \delta, q_{1}, q_{accept}, q_{reject})$ such that:
+\noindent This particular Turing machine can be given formally as $M \coloneq (Q, \Sigma, \Gamma, \delta, q_{1}, q_{accept}, q_{reject})$ such that:
 \begin{itemize}
 	\item $Q \coloneq \{ q_{1}, q_{2}, q_{3}, q_{4}, q_{5}, q_{accept}, q_{reject} \}$
 	\item $\Sigma \coloneq \{ 0, 1 \}$
 	\item $\Gamma \coloneq \{ 0, 1, x, \textvisiblespace \}$
-	\item The transition function $\delta$ is given as a state diagram (see figure 2)
+	\item The transition function $\delta$ is given as an instruction set (see figure 2)
 \end{itemize}
 \begin{figure}[h]
 	\begin{tikzpicture}[scale=0.75, transform shape]
@@ -168,14 +188,14 @@ Terefore, the binary 'even weight verification' function is computable, as it te
 \section{The Halting Problem}
 Alan Turing, during the 20th century, used similar concepts from computability theory to prove that first-order logic is, in fact, non-decidable.  This was a major question in the field of mathematical logic for some time, and Turing was among one of the first to prove this fact.  In order to prove this fact, Turing showed that there exists no finite program which terminates for every possible input belonging to the language of first-order logic.  The proof that Turing constructed is known commonly as \textbf{the halting problem}, and it goes as follows. \cite{7}
 \begin{prf}
-	Assume there exists some program $M$ which accepts as its input parameters a program $P$, and a particular input for $P$ which we'll call $I$.  Assume that $M$ determines whether $P$ terminates for the input $I$, itself terminating in state $q_{accept}$ if $P$ terminates for the input $I$, and terminating in state $q_{reject}$ if not.  Finally, and most importantly as we work toward a contradiction, assume that $M$ itself terminates for all possible inputs $P$ and $I$.  To begin the proof, we generate a new Turing machine by transforming $M$ in such a way that simple logic is appended to the end of $M$'s program.  We say that, if the new Turing machine, which we'll call $M'$, enters state $q_{accept}$, it should loop forever, and if $M'$ enters state $q_{reject}$, then it should terminate in state $q_{accept}$.  We now feed $M'$ into itself with $M'$ as its input.\\
+	We begin by instantiating a Turing machine $M \coloneq (Q, \Sigma, \Gamma, \delta, q_{1}, q_{accept}, q_{reject})$ which accepts as its input parameters a program $P$ such that any character $p \in P$ is also a member of the alphabet $\Sigma$, specifying some arbitrary Turing machine's transition function, and a particular input string for some arbitrary Turing machine running the program $P$ which we'll call $I$.  Assume that $M$ determines whether the transition function given by $P$ terminates for the input $I$, itself terminating in state $q_{accept}$ if $P$ terminates for the input $I$, and terminating in state $q_{reject}$ if not.  Finally, and most importantly as we work toward a contradiction, assume that $M$ itself terminates for all possible inputs $P$ and $I$.  To begin the proof, we generate a new Turing machine by transforming $M$ in such a way that simple logic is appended to the end of $M$'s program.  We say that, if the new Turing machine, which we'll call $M'$, enters state $q_{accept}$, it should loop forever, and if $M'$ enters state $q_{reject}$, then it should terminate in state $q_{accept}$.  We now feed $M'$ into itself with $M'$ and some arbitrary string $I'$ as its input.\\
 \begin{adjustwidth}{0.5cm}{}
-	\textbf{Case 1:} If we assume the program $M'$ terminates on input $M'$, then $M'$ will loop forever, leading to a contradiction.\\
+	\textbf{Case 1:} If the program $M'$ terminates on input $M'$ and $I'$, then $M'$ will loop forever, leading to a contradiction.\\
 \end{adjustwidth}
 \begin{adjustwidth}{0.5cm}{}
-	\textbf{Case 2:} If we assume the program $M'$ loops forever on input $M'$, then $M'$ will terminate, also leading to a contradiction.\\
+	\textbf{Case 2:} If we assume the program $M'$ loops forever on input $M'$ and $I'$, then $M'$ will terminate, also leading to a contradiction.\\
 \end{adjustwidth}
-	\noindent Therefore, if we assume that there exists some program $M$ which determines whether an input program given its input terminates, then we are led to a contradiction in both cases. \cite{5} \qedsymbol
+	\noindent Therefore, if we assume that there exists some program $M$ which determines whether an input program given its input terminates, then we are led to a contradiction.  Thus, there exists no Turing machine which can decide whether some arbitrary program will terminate for some arbitrary input. \cite{5} \qedsymbol
 \end{prf}
 
 \section{Conclusions}

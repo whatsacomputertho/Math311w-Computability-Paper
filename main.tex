@@ -35,18 +35,18 @@ nessacry to define and describe mechanisms by which one may determine if a
 function is computable. We introduce the reader to the Turing Machine, a
 conceptual model of an all purpose computer. Once familiarzing the reader
 with the aforementioned concepts we invoke the use of a Turing Machine to
-rigorously prove of the computability of an even weight verification function for
+rigorously prove the computability of an even weight verification function for
 a binary input string. We conclude with a discussion of the Halting Problem in
-order to further extend our discussion to noncomputable functions. \cite{1}
+order to further extend our discussion to undecidable languages. \cite{1}
 
 \section{Background}
 It is essential to understanding the following definitions of elementary set theory prior to the discussion of Turing machines and their functionality.
 \begin{defin}
 A \textbf{set} is a well-defined collection of objects. The objects which a set is composed of are referred to as its \textbf{elements} or \textbf{members}.
 \begin{itemize}
-\item $a \in S$ represents that a is 'in' $S$, or that a is a elements of $S$
-\item $a \notin S$ represents that a is not an element of $S$
-\item $\emptyset$ represents an empty set
+\item $a \in S$ represents that $a$ is 'in' $S$, or that $a$ is an element of $S$
+\item $a \notin S$ represents that $a$ is not an element of $S$
+\item $\emptyset$ represents the empty set
 \end{itemize}
 \end{defin}
 \begin{defin}
@@ -70,7 +70,7 @@ A \textbf{function} $f \subseteq X \times Y$, such that each $x \in X$ is mapped
 \end{defin} \cite{2}
 
 \section{Turing Machines}
-The Turing Machine is a general-purpose computing device capable of performing any given algorithmic computation \cite{1}.  While the model itself is an abstraction, any instantion of a Turing Machine, physical or platonic, is comprised of the following:
+The Turing Machine is a general-purpose computing device capable of performing any given algorithmic computation \cite{1}.  While the model itself is an abstraction, any instantiation of a Turing Machine, physical or platonic, is comprised of the following:
 \begin{itemize}
 	\item A "control box" which stores a program of finite size, formally known as the \textbf{transition function}.
 	\item A tape with a potentially infinite number of memory spaces in which symbols can be stored, read, and written into each indivdua spacel.
@@ -99,7 +99,7 @@ The Turing Machine is a general-purpose computing device capable of performing a
 
 \noindent Any combination of English characters belonging to the English dictionary will certainly be a member of the language $L_{english}$ which is defined on the alphabet $A_{english}$. \cite{5} \\
 
-\noindent Having introduced the items above we may now develope a formal definiton of the Turing Machine.
+\noindent Having introduced the items above we may now develop a formal definiton of the Turing Machine.
 
 \begin{defin}
 	A \textbf{Turing Machine} is a 7-Tuple, $(Q, \Sigma, \Gamma, \delta, q_{0}, q_{accept}, q_{reject})$, where:
@@ -107,7 +107,7 @@ The Turing Machine is a general-purpose computing device capable of performing a
 \begin{itemize}
 	\item $Q$ is a finite set containing the states of the machine
 	\item $\Sigma$ is a finite set containing the machine's \textbf{input alphabet}
-	\item $\Gamma$ is the finite set containing th emachine's \textbf{tape alphabet} such that the \textbf{blank symbol} $\textvisiblespace \in \Gamma$ and $\Sigma \subseteq \Gamma$
+	\item $\Gamma$ is the finite set containing the machine's \textbf{tape alphabet} such that the \textbf{blank symbol} $\textvisiblespace \in \Gamma$ and $\Sigma \subseteq \Gamma$
 	\item $\delta$ is the \textbf{transition function} $\delta: Q \times \Gamma \to Q \times \Gamma \times \{L, R\}$
 	\item $q_{0}$ is the \textbf{starting state} $q_{0} \in Q$
 	\item $q_{accept}$ is the \textbf{accept state} $q_{accept} \in Q$
@@ -128,7 +128,7 @@ Let's imagine a Turing machine running an algorithm which decides whether a bina
 	\item If the first bit of the string is a '1', transition to state $q_{2}$.
 	\item While in states $q_{2}$ and $q_{3}$, transition to the other state if a '1' is read, remain in current state if '0' is read.
 	\item If in state $q_{2}$ and reading '$\textvisiblespace$' character, terminate in state $q_{reject}$
-	\item If in state $q_{3}$ and reading '$\textvisiblespace$' charactre, terminate in state $q_{accept}$.
+	\item If in state $q_{3}$ and reading '$\textvisiblespace$' character, terminate in state $q_{accept}$.
 \end{enumerate}
 \noindent This particular Turing machine may be given formally as \\
 
@@ -165,7 +165,7 @@ Let's imagine a Turing machine running an algorithm which decides whether a bina
 	$1101 \textvisiblespace q_{reject}$
 \end{tabular}
 \end{center}
-\noindent Since our input string has an odd number of '1' characters our Turing machine terminartes in state $q_{reject}$. Thus, $\vv{x}$ is not of even weight. \\
+\noindent Since our input string has an odd number of '1' characters our Turing machine terminates in state $q_{reject}$. Thus, $\vv{x}$ is not of even weight. \\
 
 \noindent Let us now walk through each configuration of the even-weighted input string $\vv{x} = 1001$.  We have the following configurations:
 \begin{center}
@@ -188,7 +188,7 @@ As observed in \textbf{Example 3.1}, it is apparent that when a Turing machine r
 	A language $L$ is \textbf{Turing-decidable} if there exists some Turing machine $M$ such that, for each input word $\vv{x} \in L$, $M$ terminates in either state $q_{accept}$ or $q_{reject}$ \cite{1}
 \end{defin}
 
-\noindent Turing decidability relates to computability by considering the Church-Turing thesis.  Essentially, one interpretation of the thesis states that if one wishes to prove that a certain operation is computable, one can do so by constructing a Turing machine which terminates for all possible inputs into that operation \cite{6}.  To display this, we will prove that the binary 'even weight verification' function introduced in \textbf{Example 3.1} is a computable function.
+\noindent Turing decidability corresponds with computability via the Church-Turing thesis.  The thesis states that if one wishes to prove that a certain operation is computable, one may do so by constructing a Turing machine which terminates for all possible inputs into that operation \cite{6}. To further illustrate, we prove that the binary 'even weight verification' function introduced in \textbf{Example 3.1} is a computable function.
 \begin{prf}
 	First, let us note that the input alphabet accepted by our Turing machine (its definition given in $\textbf{Example 3.1}$) $\Sigma \coloneq \{ 0, 1 \}$.  This would imply that the \textbf{language} $L$ emergent from this alphabet is simply the set of all binary strings (or \textbf{words}) of any length $n \in \mathbb{N}$.  We enumerate this language using $\mathbb{N}^{2}$.  We use $\mathbb{N}^{2}$ as opposed to simply $\mathbb{N}$ because we note that, for example, the strings $\vv{y}=000101$ and $\vv{z}=101$ are different inputs entirely, and may be handled differently by our Turing machine, even though their decimal values are identical.  Therefore, we allow one degree of freedom to represent the weight of the arbitrary input word $\vv{x}$, and the other to represent the decimal value of the arbitrary input word $\vv{x}$ written in reverse order (i.e. $\vv{y}=000101$ written in reverse order is $101000$, and its decimal value is $40$).  Using this fact, we can partition our input language into four unique subsets, and engage in a 'proof by cases' on an arbitrary member of each such subset.\\
 \begin{adjustwidth}{0.5cm}{}
@@ -220,7 +220,7 @@ In the 20th century, Alan Turing used similar concepts from the theory of comput
 \end{prf}
 
 \section{Conclusions}
-Throughout this paper we have provided a breif introduction to the essentials of the theory of computation. We give a formal definition of the Turing machine, and we emphasize its signafcance as the mechanism by which one may prove if a function is indeed computable.  We rigorously prove that a Turing machine can decide whether the weight of an arbitrary binary string is even by showing that there exists at least one Turing machine which terminates as expected for any given binary string input.  Following our proof of computablity, we present the Halting Problem and its proof in order to exemplify how one might prove that a language is not Turing decidable.  The above discussions results are but a small window into the theory of computation.  These abstract mathematical ideas underly all computations and are the fundamental underpinings of our computational world.  Computer science continues to evolve both as an engineering descipline and a theoretical pursuit.  Nevertheless, it's modern instantation began with the conception of the Turing Machine and a proof showing that there are some functions which are and are not computable.
+Throughout this paper we have provided a brief introduction to the essentials of the theory of computation. We give a formal definition of the Turing machine, and we emphasize its significance as the mechanism by which one may prove if a function is indeed computable.  We rigorously prove that a Turing machine can decide whether the weight of an arbitrary binary string is even by showing that there exists at least one Turing machine which terminates as expected for any given binary string input.  Following our proof of computablity, we present the Halting Problem and its proof in order to exemplify how one might prove that a language is not Turing decidable.  The above results are but a small window into the theory of computation.  These abstract mathematical ideas underly all computations and are the fundamental underpinings of our computational world.  Computer science continues to evolve both as an engineering descipline and a theoretical pursuit.  Nevertheless, it's modern instantation began with the conception of the Turing Machine and a proof showing that there are some functions which are and are not computable.
 
 \begin{thebibliography}{100}
 	\bibitem{1} Sipser, Michael. (2013). Introduction to the Theory of Computation. Cengage Learning. Third Edition. Print.

@@ -14,7 +14,7 @@
 
 \title{Computability, its Proof by Construction, and the Halting Problem}
 \author{Oluwafunke Alliyu, Ethan Balcik, Paul John Balderston, Sen Zhu}
-\date{April 2021}
+\date{April 30, 2021}
 
 \begin{document}
 \theoremstyle{definition}
@@ -211,7 +211,7 @@ In the 20th century, Alan Turing used similar concepts from the theory of comput
 \begin{prf}
 	We begin by instantiating a Turing machine $M \coloneq (Q, \Sigma, \Gamma, \delta, q_{1}, \newline q_{accept}, q_{reject})$ which accepts as its input parameters a program $P$ such that any character $p \in P$ is also a member of the alphabet $\Sigma$, specifying some arbitrary Turing machine's transition function, and a particular input string for some arbitrary Turing machine running the program $P$ which we'll call $I$.  Assume that $M$ determines whether the transition function given by $P$ terminates for the input $I$, itself terminating in state $q_{accept}$ if $P$ terminates for the input $I$, and terminating in state $q_{reject}$ if not.  Finally, and most importantly as we work toward a contradiction, assume that $M$ itself terminates for all possible inputs $P$ and $I$.  To begin the proof, we generate a new Turing machine by transforming $M$ in such a way that the following logic is appended to the end of $M$'s program. If the new Turing machine, which we'll call $M'$, enters state $q_{accept}$, it loops indefinitely, and if $M'$ enters state $q_{reject}$, then it should terminate in state $q_{accept}$.  We now input $M'$ into itself with $M'$ as its input.\\
 \begin{adjustwidth}{0.5cm}{}
-	\textbf{Case 1:} If the $M'$ terminates on inputs $M'$ and $M'$, then $M'$ will loop forever, leading to a contradiction.\\
+	\textbf{Case 1:} If $M'$ terminates on inputs $M'$ and $M'$, then $M'$ will loop forever, leading to a contradiction.\\
 \end{adjustwidth}
 \begin{adjustwidth}{0.5cm}{}
 	\textbf{Case 2:} If $M'$ loops forever on inputs $M'$ and $M'$, then $M'$ will terminate. This statement is also contradictory.\\
